@@ -1,0 +1,30 @@
+{
+  "collapse-filter": false,
+  "search": "- path: \"weekly-logs\"",
+  "showTags": true,
+  "showAttachments": false,
+  "hideUnresolved": true,
+  "showOrphans": true,
+  "collapse-color-groups": false,
+  "colorGroups": [
+    {
+      "query": "path:weekly-logs",
+      "color": {
+        "a": 1,
+        "rgb": 14701138
+      }
+    }
+  ],
+  "collapse-display": false,
+  "showArrow": true,
+  "textFadeMultiplier": -0.2,
+  "nodeSizeMultiplier": 1.46601896367521,
+  "lineSizeMultiplier": 4.82004540598291,
+  "collapse-forces": false,
+  "centerStrength": 0.518713248970312,
+  "repelStrength": 11.1393581081081,
+  "linkStrength": 1,
+  "linkDistance": 250,
+  "scale": 2.9483340684850066,
+  "close": true
+}
