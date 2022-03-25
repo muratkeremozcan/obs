@@ -1,4 +1,4 @@
-# List of Test Methodologies
+# Test Methodologies
 
 Test methodologies can be of benefit when conceptualizing any test approach -from unit to features- , defining test strategies or building test architectures.
 
@@ -10,7 +10,7 @@ Although this is testing at its simplest, there are [holistic approaches](https:
 
 ### [](https://dev.to/muratkeremozcan/mostly-incomplete-list-of-test-methodologies-52no#requierementsbased-traceability-matrix)[Requierements-based (traceability matrix)](https://en.wikipedia.org/wiki/Traceability_matrix)
 
-Testing based on the requirements of the system. Requirement Coverage is the relationship between test cases and requirements. Requirement Tracability visualizes these relations: 1:1, 1:n, n:1 or n:n.
+Testing based on the requirements of the system. Requirement #Coverage is the relationship between test cases and requirements. Requirement Tracability visualizes these relations: 1:1, 1:n, n:1 or n:n.
 
 ### [](https://dev.to/muratkeremozcan/mostly-incomplete-list-of-test-methodologies-52no#scenario-workflow-use-case-activity-diagrams)[Scenario / Workflow / Use case / Activity diagrams](https://en.wikipedia.org/wiki/Activity_diagram)
 
@@ -65,7 +65,7 @@ Familiar terminology from day to day tools we use in development.
 
 ### [](https://dev.to/muratkeremozcan/mostly-incomplete-list-of-test-methodologies-52no#mutation-testing)[Mutation testing](https://stryker-mutator.io/docs/)
 
-Mutation testing can be used to evaluate the fault-detection capability of a unit test suite. In Mutation testing, artificial "defects" are introduced to the code. Subsequently, different versions of the code -mutants- are tested-against using the test suite at hand. Finally, the efficiency of the test cases is evaluated -mutation score- based on the success rate of finding defects -mutants being killed. In modern web dev, it can be utilized after there is confidence in coverage, to further determine if the testing is adequate. Then, the tests with low mutation score can be enhanced to be more meaningful.
+#Mutation testing can be used to evaluate the fault-detection capability of a unit test suite. In Mutation testing, artificial "defects" are introduced to the code. Subsequently, different versions of the code -mutants- are tested-against using the test suite at hand. Finally, the efficiency of the test cases is evaluated -mutation score- based on the success rate of finding defects -mutants being killed. In modern web dev, it can be utilized after there is confidence in #coverage, to further determine if the testing is adequate. Then, the tests with low mutation score can be enhanced to be more meaningful.
 
 ### [](https://dev.to/muratkeremozcan/mostly-incomplete-list-of-test-methodologies-52no#ui-e2e-testing)UI e2e testing
 

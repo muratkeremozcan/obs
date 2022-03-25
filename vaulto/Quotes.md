@@ -5,11 +5,12 @@
 -   Story point estimates must account for development, testing, as well as documentation - whatever it takes to put that feature in front of the customer or the consumer API. Story pointing is an estimation of complexity; having to write tests does not change that because complexity is still the same. The **velocity** of the team will change and normalize over time. That is the real velocity of the team which fulfills an industry standard definition of done.
 -   Writing tests and running them as you implement the feature will make your more productive
 -   Shared mutable state is the source of all evil
--   However many tests you have, you can never prove your software is good. But one failing test means your software isn't good enough
+-   However many tests you have, you can never prove your software is good. But one failing test means your software isn't good enough. Therefore use proven [[Test Methodologies]] to gain the highest confidence with the miminal investment.
 -   Lean: maximum output with minimum work
 -   You can't make a baby in a month with 9 women
 -   As the [[quality]] of our system reduced, our ability to change it reduces too
--   The more you tests resmble the way your software is used, the more confidence they give you. 
+-   The more you tests resemble the way your software is used, the more confidence they give you. 
+-   #Coverage is an assessment for the thoroughness or completeness of testing with respect to a model. Our model can be unit coverage, feature coverage, #mutation score, combinatorial coverage, non-functional requirement coverage, anything!
 -   Pessimists sound smart, optimists make money
 -   ... once battle-testing has defeated real-world issues and edge cases ...
 -   ... trade offs that it made are no longer valuable
