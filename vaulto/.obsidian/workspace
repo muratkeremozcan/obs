@@ -9,7 +9,7 @@
         "state": {
           "type": "markdown",
           "state": {
-            "file": "weekly-logs/2022-03-13.md",
+            "file": "blog/Test Strategies for Front-end Applications using LaunchDarkly Feature Flags and Cypress.md",
             "mode": "source",
             "source": false
           }
@@ -40,7 +40,7 @@
             "state": {
               "type": "search",
               "state": {
-                "query": "tag:#GHA",
+                "query": "much concise versions",
                 "matchingCase": false,
                 "explainSearch": false,
                 "collapseAll": false,
@@ -53,7 +53,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 326
   },
   "right": {
     "id": "f4117779e92e22d8",
@@ -69,7 +69,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "weekly-logs/2022-03-13.md",
+                "file": "blog/Test Strategies for Front-end Applications using LaunchDarkly Feature Flags and Cypress.md",
                 "collapseAll": false,
                 "extraContext": true,
                 "sortOrder": "alphabetical",
@@ -105,7 +105,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "weekly-logs/2022-03-13.md"
+                "file": "blog/Test Strategies for Front-end Applications using LaunchDarkly Feature Flags and Cypress.md"
               }
             }
           }
@@ -117,15 +117,15 @@
   },
   "active": "4eabc17d7e5da767",
   "lastOpenFiles": [
-    "weekly-logs/2022-03-13.md",
-    "weekly-logs/2022-03-20.md",
-    "Slack notes.md",
-    "Definiton of Done.md",
-    "Test Methodologies.md",
-    "Quotes.md",
-    "weekly-logs/2021-09-05.md",
-    "test methodologies.md",
-    "weekly-logs/Eng demo 3-18 GHA Remote reusable workflows.md",
-    "Learning roadmap.md"
+    "blog/Test Strategies for Front-end Applications using LaunchDarkly Feature Flags and Cypress.md",
+    "blog/Test Strategies for Front-end Applications using LaunchDarkly Feature Flags and Cypress SETUP.md",
+    "blog/Test emails effortlessly with Cypress, Mailosaur and cy-spok.md",
+    "CRUD API testing a deployed service with Cypress.md",
+    "blog/How to create internal test plugins for your team.md",
+    "blog/The 32+ ways of selective testing with Cypress.md",
+    "blog/API e2e testing event driven systems.md",
+    "blog/Functional Programming Test Patterns with Cypress.md",
+    "cross-browser testing.md",
+    "blog/Combined Unit & E2E Code Coverage.md"
   ]
 }
