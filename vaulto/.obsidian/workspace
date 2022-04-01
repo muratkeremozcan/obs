@@ -9,7 +9,7 @@
         "state": {
           "type": "markdown",
           "state": {
-            "file": "blog/Test Strategies for Front-end Applications using LaunchDarkly Feature Flags and Cypress.md",
+            "file": "2022-03-27.md",
             "mode": "source",
             "source": false
           }
@@ -40,7 +40,7 @@
             "state": {
               "type": "search",
               "state": {
-                "query": "much concise versions",
+                "query": "reasons for fa",
                 "matchingCase": false,
                 "explainSearch": false,
                 "collapseAll": false,
@@ -69,7 +69,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "blog/Test Strategies for Front-end Applications using LaunchDarkly Feature Flags and Cypress.md",
+                "file": "2022-03-27.md",
                 "collapseAll": false,
                 "extraContext": true,
                 "sortOrder": "alphabetical",
@@ -105,7 +105,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "blog/Test Strategies for Front-end Applications using LaunchDarkly Feature Flags and Cypress.md"
+                "file": "2022-03-27.md"
               }
             }
           }
@@ -117,15 +117,15 @@
   },
   "active": "4eabc17d7e5da767",
   "lastOpenFiles": [
-    "blog/Test Strategies for Front-end Applications using LaunchDarkly Feature Flags and Cypress.md",
+    "2022-03-27.md",
+    "Quotes.md",
+    "Quality.md",
+    "weekly-logs/2022-02-13.md",
+    "blog/Test Strategies for Front-end Applications using LaunchDarkly Feature Flags and Cypress the TESTING.md",
     "blog/Test Strategies for Front-end Applications using LaunchDarkly Feature Flags and Cypress SETUP.md",
     "blog/Test emails effortlessly with Cypress, Mailosaur and cy-spok.md",
     "CRUD API testing a deployed service with Cypress.md",
     "blog/How to create internal test plugins for your team.md",
-    "blog/The 32+ ways of selective testing with Cypress.md",
-    "blog/API e2e testing event driven systems.md",
-    "blog/Functional Programming Test Patterns with Cypress.md",
-    "cross-browser testing.md",
-    "blog/Combined Unit & E2E Code Coverage.md"
+    "blog/The 32+ ways of selective testing with Cypress.md"
   ]
 }
