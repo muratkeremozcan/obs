@@ -7,12 +7,8 @@
         "id": "4eabc17d7e5da767",
         "type": "leaf",
         "state": {
-          "type": "markdown",
-          "state": {
-            "file": "2022-03-27.md",
-            "mode": "source",
-            "source": false
-          }
+          "type": "empty",
+          "state": {}
         }
       }
     ],
@@ -69,12 +65,11 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "2022-03-27.md",
                 "collapseAll": false,
                 "extraContext": true,
                 "sortOrder": "alphabetical",
                 "showSearch": true,
-                "searchQuery": "Test Methodologies",
+                "searchQuery": "",
                 "backlinkCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -104,28 +99,27 @@
             "type": "leaf",
             "state": {
               "type": "outline",
-              "state": {
-                "file": "2022-03-27.md"
-              }
+              "state": {}
             }
           }
         ]
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 300,
+    "collapsed": true
   },
   "active": "4eabc17d7e5da767",
   "lastOpenFiles": [
-    "2022-03-27.md",
+    "state-of-CD.md",
+    "2022-4-3.md",
+    "Learning roadmap.md",
+    "Slack notes.md",
+    "Continious Deployment.md",
     "Quotes.md",
     "Quality.md",
+    "2022-03-27.md",
     "weekly-logs/2022-02-13.md",
-    "blog/Test Strategies for Front-end Applications using LaunchDarkly Feature Flags and Cypress the TESTING.md",
-    "blog/Test Strategies for Front-end Applications using LaunchDarkly Feature Flags and Cypress SETUP.md",
-    "blog/Test emails effortlessly with Cypress, Mailosaur and cy-spok.md",
-    "CRUD API testing a deployed service with Cypress.md",
-    "blog/How to create internal test plugins for your team.md",
-    "blog/The 32+ ways of selective testing with Cypress.md"
+    "blog/Test Strategies for Front-end Applications using LaunchDarkly Feature Flags and Cypress the TESTING.md"
   ]
 }

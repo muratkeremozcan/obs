@@ -6,6 +6,7 @@
 -   Writing tests and running them as you implement the feature will make your more productive
 -   Shared mutable state is the source of all evil
 -   However many tests you have, you can never prove your software is good. But one failing test means your software isn't good enough. Therefore use proven [[Test Methodologies]] to gain the highest confidence with the miminal investment.
+-   Engineering is about learning, not already having all the answers. Good engineers optimize to be great at learning. You do that with short feedback cycles and iterating quickly.
 -   Lean: maximum output with minimum work
 -   You can't make a baby in a month with 9 women
 -   As the [[quality]] of our system reduced, our ability to change it reduces too
