@@ -7,8 +7,12 @@
         "id": "4eabc17d7e5da767",
         "type": "leaf",
         "state": {
-          "type": "empty",
-          "state": {}
+          "type": "markdown",
+          "state": {
+            "file": "2022-04-10.md",
+            "mode": "source",
+            "source": false
+          }
         }
       }
     ],
@@ -36,7 +40,7 @@
             "state": {
               "type": "search",
               "state": {
-                "query": "reasons for fa",
+                "query": "",
                 "matchingCase": false,
                 "explainSearch": false,
                 "collapseAll": false,
@@ -65,6 +69,7 @@
             "state": {
               "type": "backlink",
               "state": {
+                "file": "2022-04-10.md",
                 "collapseAll": false,
                 "extraContext": true,
                 "sortOrder": "alphabetical",
@@ -99,7 +104,9 @@
             "type": "leaf",
             "state": {
               "type": "outline",
-              "state": {}
+              "state": {
+                "file": "2022-04-10.md"
+              }
             }
           }
         ]
@@ -111,15 +118,15 @@
   },
   "active": "4eabc17d7e5da767",
   "lastOpenFiles": [
-    "state-of-CD.md",
-    "2022-4-3.md",
-    "Learning roadmap.md",
-    "Slack notes.md",
-    "Continious Deployment.md",
+    "2022-04-10.md",
+    "weekly-logs/2022-04-03.md",
     "Quotes.md",
-    "Quality.md",
-    "2022-03-27.md",
-    "weekly-logs/2022-02-13.md",
-    "blog/Test Strategies for Front-end Applications using LaunchDarkly Feature Flags and Cypress the TESTING.md"
+    "Definiton of Done.md",
+    "weekly-logs/2022-01-16.md",
+    "weekly-logs/2022-01-09.md",
+    "weekly-logs/2021-11-28.md",
+    "Cypress, Percy, Github Actions.md",
+    "blog/The 32+ ways of selective testing with Cypress.md",
+    "weekly-logs/2022-01-30.md"
   ]
 }

@@ -15,6 +15,7 @@
 -   Pessimists sound smart, optimists make money
 -   ... once battle-testing has defeated real-world issues and edge cases ...
 -   ... trade offs that it made are no longer valuable
+-   a test doesn't deliver value until it fails
 *   Always look for opportunities to tweak what test is already existing as opposed to writing partially duplicated tests for new specs. The reason Cucumber / Gherkin is not great is this duplication; if every feature was mapped to a spec, there would be much duplication between the specs. What matters from a test perspective is the beginning state of a test; if reaching that state is common, then it is an opportunity for a test enhancement vs partial test duplication. At which point, the only caveat becomes the test duration for parallelization concerns.
 * `this` keyword in JavaScript will burn you one day. Then it will burn you again and again and again. If Dante Alighieri were alive today, he would put writing object-oriented JavaScript among one of the first levels of Hell for sure. ![[Pasted image 20220316143024.png]]
 
@@ -25,3 +26,5 @@
 -   ...talk that dances around thorns 
 -   small men talk big 
 -   if you're not upsetting anyone, you're not changing the status quo
+- -   one part of leadership is allowing others to do a worse job than you would
+-   leadership of creative people is mostly about enabling creative communication
