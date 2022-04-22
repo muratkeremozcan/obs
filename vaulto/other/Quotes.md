@@ -9,7 +9,7 @@
 -   Engineering is about learning, not already having all the answers. Good engineers optimize to be great at learning. You do that with short feedback cycles and iterating quickly.
 -   Lean: maximum output with minimum work
 -   You can't make a baby in a month with 9 women
--   As the [[quality]] of our system reduced, our ability to change it reduces too
+-   As the [[Quality]] of our system reduced, our ability to change it reduces too
 -   The more you tests resemble the way your software is used, the more confidence they give you. 
 -   #Coverage is an assessment for the thoroughness or completeness of testing with respect to a model. Our model can be unit coverage, feature coverage, #mutation score, combinatorial coverage, non-functional requirement coverage, anything!
 -   Pessimists sound smart, optimists make money
@@ -17,6 +17,7 @@
 -   ... trade offs that it made are no longer valuable
 -   a test doesn't deliver value until it fails
 *   Always look for opportunities to tweak what test is already existing as opposed to writing partially duplicated tests for new specs. The reason Cucumber / Gherkin is not great is this duplication; if every feature was mapped to a spec, there would be much duplication between the specs. What matters from a test perspective is the beginning state of a test; if reaching that state is common, then it is an opportunity for a test enhancement vs partial test duplication. At which point, the only caveat becomes the test duration for parallelization concerns.
+*   The ability to hold a holistic picture in mind and help other team members see it collectively, collaboratively navigate towards it, changing direction as new ideas arise has been a hallmark of great engineers.
 * `this` keyword in JavaScript will burn you one day. Then it will burn you again and again and again. If Dante Alighieri were alive today, he would put writing object-oriented JavaScript among one of the first levels of Hell for sure. ![[Pasted image 20220316143024.png]]
 
 ## ACD
@@ -28,3 +29,4 @@
 -   if you're not upsetting anyone, you're not changing the status quo
 - -   one part of leadership is allowing others to do a worse job than you would
 -   leadership of creative people is mostly about enabling creative communication
+-   in danger of too violently agreeing with each other in the course of this conversation
