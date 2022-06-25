@@ -18,7 +18,11 @@
 -   ... once battle-testing has defeated real-world issues and edge cases ...
 -   ... trade offs that it made are no longer valuable
 -   a test doesn't deliver value until it fails
+-   what you can avoid testing is more important than what you are testing
+-   We don't get to do naive UI e2e before there is confidence that the backend works. Better to use an API test client, closer to the backend code and deployments, vs our late UI e2e. At that point we need to be careful with test duplication, use minimal UI e2e & only fill in the gaps.  
+There aren't too many test frameworks that support that test strategy.. [Cypress.io](https://www.linkedin.com/company/cypress.io/) is one.
 *   Always look for opportunities to tweak what test is already existing as opposed to writing partially duplicated tests for new specs. The reason Cucumber / Gherkin is not great is this duplication; if every feature was mapped to a spec, there would be much duplication between the specs. What matters from a test perspective is the beginning state of a test; if reaching that state is common, then it is an opportunity for a test enhancement vs partial test duplication. At which point, the only caveat becomes the test duration for parallelization concerns.
+* My golden rules in testing: - It’s always cost v confidence - cost = creation + execution + maintenance - What you can avoid testing is more important than what you are testing
 *   The debate on Page Object vs module pattern is really just Inheritance vs Composition.  Inheritance (PO) is great for describing what something is; the page has x, y, z on it.  Composition (module pattern) is great for describing what something does. Which one do you think best fits component based architecture, where components are the building blocks and get reused on pages? How about user flows?
 *   Study for 1 hour every morning. Even in the most ideal job, you won't be learning more than 500 hours a year, because most of it is busy work and grind. If you invest an hour a day in gaining knowledge, in 5 years you will build 10 years worth of relative tech
 *   When you have purpose, you have work-life integration. Find your purpose, and never work a day in your life. Help others build their self-defined purpose, and you rarely have to people-manage.
@@ -26,6 +30,7 @@
 *   Business demands may overload teams with too much work, driving them to optimize for feature delivery. This is a terrible metric for success. It drives engineers to shortcut and so make bad decisions that end up with them going slower over time, not faster. Developers often try to please business by reducing the quality of their work. If you've ever given an estimate that didn't include testing or refactoring, you did this.
 *   Quality is a whole team responsibility. From a developer's perspective a significant part of that responsibility firmly sits with us; it is not something we can successfully abdicate to other people. If you see testing as somebody else's responsibility, QA as the gatekeepers of quality, your manager's job to tell you how much quality you can put in your code, you should think again.
 *   The first principal is that you must not fool yourself, and you're the easiest person to fool.
+*   **Murphy’s Law of Debugging:** The thing you believe so deeply can’t possibly be wrong so you never bother testing it, is definitely where you’ll find the bug after you pound your head on your desk and change it only because you’ve tried everything else you can possibly think of.
 * `this` keyword in JavaScript will burn you one day. Then it will burn you again and again and again. If Dante Alighieri were alive today, he would put writing object-oriented JavaScript among one of the first levels of Hell for sure. ![[Pasted image 20220316143024.png]]
 
 ## ACD
@@ -38,3 +43,4 @@
 - -   one part of leadership is allowing others to do a worse job than you would
 -   leadership of creative people is mostly about enabling creative communication
 -   in danger of too violently agreeing with each other in the course of this conversation
+-   what's the point of it all if all you want is to be liked by everyone and avoid trouble. The only way I got any place was by breaking some of the rules.
