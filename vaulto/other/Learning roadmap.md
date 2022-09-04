@@ -78,7 +78,7 @@ You can utilize [Info & Resources in Engineering Onboarding](https://helloextend
             
         -   [Advanced Cypress workshop](https://github.com/cypress-io/testing-workshop-cypress "https://github.com/cypress-io/testing-workshop-cypress")
             
-    -   [Jest Handbook](https://github.com/HugoDF/jest-handbook-examples/tree/master/src "https://github.com/HugoDF/jest-handbook-examples/tree/master/src") - if you wish to become a part of the unit test effort
+    -   Kent Dodd's [Epic React](https://epicreact.dev/learn) & [TestingJs](https://testingjavascript.com/) ([my repo](https://github.com/muratkeremozcan/epic-react-testingJs))
         
     -   [A quick Journey Through API testing](https://www.amazon.com/journey-Testing-Application-practices-features-ebook/dp/B07MH81L1X "https://www.amazon.com/journey-Testing-Application-practices-features-ebook/dp/B07MH81L1X") ([repo](https://github.com/muratkeremozcan/cypressExamples/tree/master/cypress-api-testing "https://github.com/muratkeremozcan/cypressExamples/tree/master/cypress-api-testing")) - if you are unfamiliar with api testing
         
