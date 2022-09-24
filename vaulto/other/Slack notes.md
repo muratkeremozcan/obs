@@ -175,3 +175,13 @@ Copy/paste regex
 [projects.lukehaas.me/regexhub/](http://projects.lukehaas.me/regexhub/)  
 [ihateregex.io](http://ihateregex.io/)  
 [uibakery.io/regex-library](http://uibakery.io/regex-library)
+
+
+## React event types
+-   event: `React.ChangeEvent<HTMLInputElement> 
+-   submit event: `React.FormEvent`
+-   click event: `React.MouseEvent<HTMLButtonElement>`
+
+
+## Return object from a Cypress command
+![[Pasted image 20220909074734.png]]

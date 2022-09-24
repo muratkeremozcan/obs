@@ -34,3 +34,9 @@ Cypress Component Testing
 Poly repo & CD - GHA remote reusable workflows, pipeline setup, renovate, testing, 
 
 ## What are 1-3 goals for H2 2022?
+
+Create our front-end onboarding course   
+   
+Migrate to Cypress 10 and roll out component testing   
+   
+Contribute to poly repo migration and continuous delivery efforts, build the new pipeline and test architecture in our new paradigm
