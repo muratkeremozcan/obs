@@ -9,7 +9,7 @@
         "state": {
           "type": "markdown",
           "state": {
-            "file": "other/q1 target stuff.md",
+            "file": "blog/Typescript - Triple combined code coverage for React Apps with Jest, Cypress component and e2e tests, using Github Actions.md",
             "mode": "source",
             "source": false
           }
@@ -69,7 +69,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "other/q1 target stuff.md",
+                "file": "blog/Typescript - Triple combined code coverage for React Apps with Jest, Cypress component and e2e tests, using Github Actions.md",
                 "collapseAll": false,
                 "extraContext": true,
                 "sortOrder": "alphabetical",
@@ -105,7 +105,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "other/q1 target stuff.md"
+                "file": "blog/Typescript - Triple combined code coverage for React Apps with Jest, Cypress component and e2e tests, using Github Actions.md"
               }
             }
           }
@@ -118,15 +118,15 @@
   },
   "active": "6850166eecbe4d1a",
   "lastOpenFiles": [
-    "2022 mid year.md",
+    "blog/Triple combined code coverage for React Apps with Jest, Cypress component and e2e tests, using Github Actions.md",
+    "blog/Typescript - Triple combined code coverage for React Apps with Jest, Cypress component and e2e tests, using Github Actions.md",
     "other/Slack notes.md",
+    "other/Definiton of Done.md",
+    "other/Learning roadmap.md",
+    "other/q1 target stuff.md",
+    "2022 mid year.md",
     "blog/CRUD API testing a deployed service with Cypress.md",
     "blog/Test Strategies for Front-end Applications using LaunchDarkly Feature Flags and Cypress the TESTING.md",
-    "blog/Test Methodologies.md",
-    "weekly-logs/2021-11-21.md",
-    "weekly-logs/2022-01-16.md",
-    "weekly-logs/2022-01-09.md",
-    "other/Quotes.md",
-    "blog/Combined Unit & E2E Code Coverage.md"
+    "blog/Test Methodologies.md"
   ]
 }
