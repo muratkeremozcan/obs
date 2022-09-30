@@ -1,10 +1,10 @@
-In the previous post we covered triple combined coverage in a React app written in JS . Alas, Typescript can be tricky with combined code coverage. We continue the series with a Typescript example using the React TS app featured in the book [**CCTDD: Cypress Component Test Driven Design**](https://app.gitbook.com/s/jK1ARkRsP5OQ6ygMk6el/). The application built in the book is in TS, includes Cypress e2e, CT tests, as well as React Testing Library mirrors of them. The repo [tour-of-heroes-react-cypress-ts](https://github.com/muratkeremozcan/tour-of-heroes-react-cypress-ts) is in its final version with combined code coverage. The state of the repo prior to code coverage is in the branch `before-code-coverage` and there is a sample [PR](https://github.com/muratkeremozcan/tour-of-heroes-react-cypress-ts/pull/82/files) for reproducing this guide.
+In the previous post we covered triple combined coverage in a React app written in JS . Alas, Typescript can be tricky with combined code coverage. We continue the series with a Typescript example using the React TS app featured in the book [**CCTDD: Cypress Component Test Driven Design**](https://app.gitbook.com/s/jK1ARkRsP5OQ6ygMk6el/). The application built in the book is in TS, includes Cypress e2e, CT tests, as well as React Testing Library mirrors of them. The repo [tour-of-heroes-react-cypress-ts](https://github.com/muratkeremozcan/tour-of-heroes-react-cypress-ts) has the final version of the repo with triple combined coverage setup. The state of the repo prior to code coverage is in the branch `before-code-coverage` and there is a sample [PR](https://github.com/muratkeremozcan/tour-of-heroes-react-cypress-ts/pull/82/files) for reproducing this guide.
 
 ## Setup Cypress Component & E2e coverage
 
 ### Add the packages
 
-With TS the packages are slightly different with `@babel/preset-typescript`:
+With TS the packages are slightly different:
 
 yarn add -D @babel/plugin-transform-modules-commonjs @babel/preset-env @babel/preset-react @babel/preset-typescript @bahmutov/cypress-code-coverage @cypress/instrument-cra  babel-loader istanbul istanbul-lib-coverage nyc
 
@@ -16,16 +16,23 @@ This script is the same as the react version
 
 ### Configure `nyc` for local coverage evaluation
 
-This is similar to the JS version, with TS and TSX included.
+Add a`.nycrc` file for config. We are setting coverage report directory as `coverage-cy` to isolate it from Jest. `all` property instruments even the files not touched by tests. `excludeAfterRemap` is set to true, per the [Cypress code coverage package docs](https://github.com/cypress-io/code-coverage#exclude-files-and-folders), to not let any excluded files through. Here's a quick [reference to nyc docs](https://github.com/istanbuljs/nyc#common-configuration-options).
 
-"excludeAfterRemap": true,  
-"report-dir": "coverage-cy",  
-"reporter": ["text", "json", "html"],  
-"extension": [".ts", ".tsx", "js", "jsx"],  
-"include": ["src/**/*.tsx", "src/**/*.ts", "src/**/*.jsx", "src/**/*.js"],  
-"exclude": [  
-  "any files you want excluded"  
-] 
+{  
+  "excludeAfterRemap": true,  
+  "report-dir": "coverage-cy",  
+  "reporter": ["text", "json", "html"],  
+  "extension": [".ts", ".tsx", "js", "jsx"],  
+  "include": ["src/**/*.tsx", "src/**/*.ts", "src/**/*.jsx", "src/**/*.js"],  
+  "exclude": [  
+    "src/setupTests.ts",  
+    "src/**/*.test.tsx",  
+    "src/**/*.cy.ts",  
+    "src/**/*.cy.tsx",  
+    "src/**/*.d.ts",  
+    "src/reportWebVitals.ts"  
+  ]  
+}
 
 ### Configure `cypress.config.js` for code coverage, instrument the app for component testing
 
@@ -120,10 +127,32 @@ Same convenience scripts as in the JS version
 
 ### In the TS version there are no differences in local combined coverage, CodeCov service, Github Actions setup
 
-We can replicate the same steps from the JS variant of the guide.
+We can replicate the same steps from the JS variant of the guide. Remember to add the CodeCov secret to the repository. Here is the `codecov.yml` file:
+
+codecov:  
+  notify:  
+    after_n_builds: 3  
+coverage:  
+  status:  
+    project:  
+      default:  
+        target: auto  
+        # this allows a 1% drop from the previous base commit coverage  
+        threshold: 2%  
+  # makes it so that unit, cy ct and cy e2e reports finish running before the report is shown in a PAR  
+  # https://docs.codecov.com/docs/notifications#preventing-notifications-until-after-n-builds  
+  ignore:  
+    - 'src/setupTests.ts'  
+    - 'src/**/*.test.tsx'  
+    - 'src/**/*.cy.ts'  
+    - 'src/**/*.cy.tsx'  
+    - 'src/**/*.d.ts'  
+    - './src/models'  
+    - 'src/reportWebVitals.ts'
 
 ### `jest` to ignore `cy.ts*` files
 
-We need to tell Jest not to include coverage from `cy.ts*` files. This can be done in the `package.json` script.
+We need to tell Jest not to include coverage from `cy.ts*` files. This can be done in the `package.json` script. Remember that we also need to modify the start script to instrument e2e tests.
 
+"start": "react-scripts -r @cypress/instrument-cra start",  
 "test:coverage": "yarn test --watchAll=false --collectCoverageFrom=src/**/*.ts* --collectCoverageFrom=!src/**/*.*.ts* --coverage",

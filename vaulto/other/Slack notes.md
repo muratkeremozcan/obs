@@ -178,9 +178,9 @@ Copy/paste regex
 
 
 ## React event types
--   event: `React.ChangeEvent<HTMLInputElement> 
--   submit event: `React.FormEvent`
--   click event: `React.MouseEvent<HTMLButtonElement>`
+-   event  `onChange`: `React.ChangeEvent<HTMLInputElement> 
+-   submit event `onSubmit`: `React.FormEvent`
+-   click event  `onClick`: `React.MouseEvent<HTMLButtonElement>`
 
 
 ## Return object from a Cypress command
