@@ -9,7 +9,7 @@
         "state": {
           "type": "markdown",
           "state": {
-            "file": "weekly-logs/2022-09-30.md",
+            "file": "demos/Eng demo 4-22-2022 Visual Snapshot Testing with AI.md",
             "mode": "source",
             "source": false
           }
@@ -40,7 +40,7 @@
             "state": {
               "type": "search",
               "state": {
-                "query": "\"between tests\"",
+                "query": "Painlessly setup Cypress & Percy with Github Actions in minutes",
                 "matchingCase": false,
                 "explainSearch": false,
                 "collapseAll": false,
@@ -53,7 +53,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 341
+    "width": 469
   },
   "right": {
     "id": "f4117779e92e22d8",
@@ -69,7 +69,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "weekly-logs/2022-09-30.md",
+                "file": "demos/Eng demo 4-22-2022 Visual Snapshot Testing with AI.md",
                 "collapseAll": false,
                 "extraContext": true,
                 "sortOrder": "alphabetical",
@@ -105,7 +105,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "weekly-logs/2022-09-30.md"
+                "file": "demos/Eng demo 4-22-2022 Visual Snapshot Testing with AI.md"
               }
             }
           }
@@ -118,15 +118,15 @@
   },
   "active": "e0432355bcab938a",
   "lastOpenFiles": [
-    "weekly-logs/2022-08-30.md",
-    "weekly-logs/2022-09-30.md",
-    "weekly-logs/2022-06-30.md",
+    "blog/Painlessly setup Cypress & Percy with Github Actions in minutes.md",
+    "blog/Setup Cypress & Applitools with GitHub Actions a comparison of Applitools vs Percy in a mid size app.md",
+    "demos/Eng demo 4-22-2022 Visual Snapshot Testing with AI.md",
+    "weekly-logs/2022-04-10.md",
     "other/Slack notes.md",
-    "other/Quotes.md",
-    "blog/Typescript - Triple combined code coverage for React Apps with Jest, Cypress component and e2e tests, using Github Actions.md",
-    "blog/Triple combined code coverage for React Apps with Jest, Cypress component and e2e tests, using Github Actions.md",
-    "other/Definiton of Done.md",
-    "other/Learning roadmap.md",
-    "other/q1 target stuff.md"
+    "demos/Eng demo 02-20-2022 Test Burn-in, Email Testing (Feb 2022).md",
+    "weekly-logs/2022-02-13.md",
+    "demos/Eng demo 4-22-2022 GHA Remote reusable workflows.md",
+    "weekly-logs/2022-03-06.md",
+    "weekly-logs/2022-02-27.md"
   ]
 }

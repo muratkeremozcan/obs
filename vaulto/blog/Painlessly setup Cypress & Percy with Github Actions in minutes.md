@@ -1,3 +1,5 @@
+# # Painlessly setup Cypress & Percy with Github Actions in minutes
+
 We have not seen an up to date, fully documented example using Cypress, Github Actions and Percy and thought this could help others in the future.
 
   
