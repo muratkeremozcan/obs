@@ -29,14 +29,14 @@ Learning FP is optional, but it will only help you understand, appreciate, use a
 Pick any book, optionally more depending how deep you want to go.  
   
 
--   [Functional Light JS](https://www.manning.com/books/functional-light-javascript "https://www.manning.com/books/functional-light-javascript") (Kyle Simpson)
-    
--   [FP in JS](https://www.amazon.com/Functional-Programming-JavaScript-functional-techniques-ebook-dp-B09781W9HY/dp/B09781W9HY/ref=mt_other?_encoding=UTF8&me=&qid= "https://www.amazon.com/Functional-Programming-JavaScript-functional-techniques-ebook-dp-B09781W9HY/dp/B09781W9HY/ref=mt_other?_encoding=UTF8&me=&qid=") (Luis Antecio)
-    
+-   [Functional Light JS](https://www.manning.com/books/functional-light-javascript "https://www.manning.com/books/functional-light-javascript") 
+-   [FP in JS](https://www.amazon.com/Functional-Programming-JavaScript-functional-techniques-ebook-dp-B09781W9HY/dp/B09781W9HY/ref=mt_other?_encoding=UTF8&me=&qid= "https://www.amazon.com/Functional-Programming-JavaScript-functional-techniques-ebook-dp-B09781W9HY/dp/B09781W9HY/ref=mt_other?_encoding=UTF8&me=&qid=") 
 -   [Prof. Frisbie's Mostly Adequate Guide to FP](https://mostly-adequate.gitbook.io/mostly-adequate-guide/ "https://mostly-adequate.gitbook.io/mostly-adequate-guide/")
-    
+-   [FP patterns with Ramda](https://www.educative.io/courses/functional-programming-patterns-with-ramdajs/YQV9QG6gqz9)
 -   [JS Allonge](https://leanpub.com/javascriptallongesix/read "https://leanpub.com/javascriptallongesix/read")
-    
+-   [Composing Software](https://leanpub.com/composingsoftware)
+-   [Functional JavaScript](https://www.amazon.com/gp/product/1449360726)
+   
 
 ## 3. After that, you can tackle the front-end or the back-end path. The order depends on your immediate needs.
 
