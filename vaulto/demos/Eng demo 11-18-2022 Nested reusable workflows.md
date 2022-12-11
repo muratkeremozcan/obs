@@ -34,7 +34,9 @@ Addresses the only con of RWF; **Nesting**
 ## **Nested** Reusable Workflows
 
 ![[Screen Shot 2022-11-18 at 11.01.48 AM.png]]
+
 ---
+
 ## Before & After
 
 -   [mono-service-e2e yml](https://github.com/helloextend/gha-reusable-workflows/blob/main/.github/workflows/mono-service-e2e.yml#L75)
@@ -46,7 +48,10 @@ Addresses the only con of RWF; **Nesting**
 -   [poly-burn-in-2e yml](https://github.com/helloextend/gha-reusable-workflows/blob/main/.github/workflows/poly-service-test-burn-in.yml#L62)
 
 ---
-All naming & yml is being refined *(Christopher)*
+## What's next
+
+All naming & yml is being
+refined *(Christopher)*
 Going into the poly service template *(Christopher)*
 CI works out of the box 
 But, also customizable & versioned

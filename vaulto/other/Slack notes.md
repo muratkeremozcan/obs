@@ -22,7 +22,19 @@ Want to scaffold TypeScript specs?
 Want to scaffold a bare minimum project?  
 `npx @bahmutov/cly init --bare (or -b)`
 
-I have been somewhat surprised at how productive people can become if a central problem solver is just unavailable - Matthew
+## package release troubles
+You need super_admin
+You can double check the file `~/.aws/config`
+`ec aws creds init`
+get super_admin
+then you can release
+
+## ec login notes
+https://helloextend.atlassian.net/wiki/spaces/ENG/pages/1431011740/AWS+Authentication
+
+
+![[Pasted image 20221205132331.png]]
+
 
 [how to stub react-redux useReducer hook - using cypress](https://stackoverflow.com/questions/66151947/how-to-stub-react-redux-usereducer-hook-using-cypress)
 

@@ -35,6 +35,8 @@ There aren't too many test frameworks that support that test strategy.. [Cypres
 *   Whoever is going to perform in the office will perform remotely. Whoever is going to pretend to seem busy and not produce anything worthwhile still is going to continue that, doesn't matter where they are.
 *   **Murphy’s Law of Debugging:** The thing you believe so deeply can’t possibly be wrong so you never bother testing it, is definitely where you’ll find the bug after you pound your head on your desk and change it only because you’ve tried everything else you can possibly think of.
 *   No plan survives contact with the enemy. No software survives contact with the users.
+*   The reasons why most people push back are cultural. They’re about familiarity and comfort. About not wanting to look or feel stupid in front of others.
+*   TypeScript saves you so much time by preventing many programming mistakes & runtime errors, leaving you more time to do other things such as deciphering & fixing insignificant TypeScript errors. (David Khorshid)
 * `this` keyword in JavaScript will burn you one day. Then it will burn you again and again and again. If Dante Alighieri were alive today, he would put writing object-oriented JavaScript among one of the first levels of Hell for sure. ![[Pasted image 20220316143024.png]]
 
 ## ACD
