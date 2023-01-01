@@ -7,7 +7,7 @@ also try
 
 
 ### install in #monorepo to subfolders
-`yarn install -D`  installs using yarn workspaces
+`yarn install -W`  installs using yarn workspaces
 
 ### re-run #GHA
 `git commit --allow-empty -n -m "re-run checks" && git push`
