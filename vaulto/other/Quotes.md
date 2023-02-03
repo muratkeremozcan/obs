@@ -21,6 +21,7 @@
 -   a test doesn't deliver value until it fails
 -   what you can avoid testing is more important than what you are testing
 -   forget the mistake, remember the lesson
+-   tests that don't give return on investment in terms of confidence
 -   We don't get to do naive UI e2e before there is confidence that the backend works. Better to use an API test client, closer to the backend code and deployments, vs our late UI e2e. At that point we need to be careful with test duplication, use minimal UI e2e & only fill in the gaps.  
 There aren't too many test frameworks that support that test strategy.. [Cypress.io](https://www.linkedin.com/company/cypress.io/) is one.
 *   Always look for opportunities to tweak what test is already existing as opposed to writing partially duplicated tests for new specs. The reason Cucumber / Gherkin is not great is this duplication; if every feature was mapped to a spec, there would be much duplication between the specs. What matters from a test perspective is the beginning state of a test; if reaching that state is common, then it is an opportunity for a test enhancement vs partial test duplication. At which point, the only caveat becomes the test duration for parallelization concerns.
@@ -32,10 +33,13 @@ There aren't too many test frameworks that support that test strategy.. [Cypres
 *   Business demands may overload teams with too much work, driving them to optimize for feature delivery. This is a terrible metric for success. It drives engineers to shortcut and so make bad decisions that end up with them going slower over time, not faster. Developers often try to please business by reducing the quality of their work. If you've ever given an estimate that didn't include testing or refactoring, you did this.
 *   Quality is a whole team responsibility. From a developer's perspective a significant part of that responsibility firmly sits with us; it is not something we can successfully abdicate to other people. If you see testing as somebody else's responsibility, QA as the gatekeepers of quality, your manager's job to tell you how much quality you can put in your code, you should think again.
 *   The first principal is that you must not fool yourself, and you're the easiest person to fool.
+*  "Simplicity is the ultimate sophistication". Because it is very easy to write confusing, complex code. But when you build software that is easy to understand, easy to read and write, easy to learn, it is a true achievement that must be celebrated.
 *   Whoever is going to perform in the office will perform remotely. Whoever is going to pretend to seem busy and not produce anything worthwhile still is going to continue that, doesn't matter where they are.
 *   **Murphy’s Law of Debugging:** The thing you believe so deeply can’t possibly be wrong so you never bother testing it, is definitely where you’ll find the bug after you pound your head on your desk and change it only because you’ve tried everything else you can possibly think of.
+*   cognitive load: if our brain is overloaded focusing on unimportant details, it is harder to reason about higher order thinking
 *   No plan survives contact with the enemy. No software survives contact with the users.
 *   The reasons why most people push back are cultural. They’re about familiarity and comfort. About not wanting to look or feel stupid in front of others.
+*   Most engineers find pw syntax simpler than cy because they do not get functional pipeline of commands, and have no idea how to debug or reason about it. Unless they are familiar with functional programming, the shift in mental modal is painful, hence the preference to pw.
 *   TypeScript saves you so much time by preventing many programming mistakes & runtime errors, leaving you more time to do other things such as deciphering & fixing insignificant TypeScript errors. (David Khorshid)
 * `this` keyword in JavaScript will burn you one day. Then it will burn you again and again and again. If Dante Alighieri were alive today, he would put writing object-oriented JavaScript among one of the first levels of Hell for sure. ![[Pasted image 20220316143024.png]]
 
