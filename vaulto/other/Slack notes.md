@@ -29,6 +29,14 @@ You can double check the file `~/.aws/config`
 get super_admin
 then you can release
 
+## automatically fix type import 
+https://stackoverflow.com/questions/71080256/is-there-a-way-to-automatically-fix-import-type-errors-on-typescript-when-usin
+add to rules:
+```javascript
+'@typescript-eslint/consistent-type-imports': 'error',
+```
+`yarn lint --fix`
+
 ## ec login notes
 https://helloextend.atlassian.net/wiki/spaces/ENG/pages/1431011740/AWS+Authentication
 

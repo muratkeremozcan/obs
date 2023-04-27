@@ -14,7 +14,9 @@
 -   The more you tests resemble the way your software is used, the more confidence they give you. 
 -   #Coverage is an assessment for the thoroughness or completeness of testing with respect to a model. Our model can be unit coverage, feature coverage, #mutation score, combinatorial coverage, non-functional requirement coverage, anything!
 -   Pessimists sound smart, optimists make money
+-   Fallacy of false authority - expert in 1 field...
 -   If you aim at nothing, you hit nothing
+-   Doing the correct thing poorly is worth more than executing the wrong things perfectly
 -   When you lose your money, you lose nothing. When you lose your health, you lose something. When you lose your character, you lose everything.
 -   ... once battle-testing has defeated real-world issues and edge cases ...
 -   ... trade offs that it made are no longer valuable
