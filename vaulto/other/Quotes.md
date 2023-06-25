@@ -27,11 +27,16 @@
 -   We don't get to do naive UI e2e before there is confidence that the backend works. Better to use an API test client, closer to the backend code and deployments, vs our late UI e2e. At that point we need to be careful with test duplication, use minimal UI e2e & only fill in the gaps.  
 There aren't too many test frameworks that support that test strategy.. [Cypress.io](https://www.linkedin.com/company/cypress.io/) is one.
 *   Always look for opportunities to tweak what test is already existing as opposed to writing partially duplicated tests for new specs. The reason Cucumber / Gherkin is not great is this duplication; if every feature was mapped to a spec, there would be much duplication between the specs. What matters from a test perspective is the beginning state of a test; if reaching that state is common, then it is an opportunity for a test enhancement vs partial test duplication. At which point, the only caveat becomes the test duration for parallelization concerns.
+*  As technology and your organization change, your context changes too. Many of the things that you might once consider as best practice can easily become anti-patterns. For example, monorepos work great when you are a small team, but by the time you grow to hundreds or perhaps thousands of engineers, monorepos present many challenges that require complex solutions to address.
+
 * My golden rules in testing: - It’s always cost v confidence - cost = creation + execution + maintenance - What you can avoid testing is more important than what you are testing
 *   The debate on Page Object vs module pattern is really just Inheritance vs Composition.  Inheritance (PO) is great for describing what something is; the page has x, y, z on it.  Composition (module pattern) is great for describing what something does. Which one do you think best fits component based architecture, where components are the building blocks and get reused on pages? How about user flows?
 *   Study for 1 hour every morning. Even in the most ideal job, you won't be learning more than 500 hours a year, because most of it is busy work and grind. If you invest an hour a day in gaining knowledge, in 5 years you will build 10 years worth of relative tech
 *   When you have purpose, you have work-life integration. Find your purpose, and never work a day in your life. Help others build their self-defined purpose, and you rarely have to people-manage.
 *   The ability to hold a holistic picture in mind and help other team members see it, collaboratively navigate towards it, changing direction as new ideas arise has been a hallmark of great engineers.
+*   (about try hard mocking) The mess in such tests is telling us that the design isn’t right but, instead of fixing the problem by improving the code, we have to carry the **extra complexity** in both code and test
+* We prefer to have the end-to-end tests exercise both the system and the **process by which it’s built and deployed**
+*   ascribing greater significance to a problem than it should have in reality
 *   Business demands may overload teams with too much work, driving them to optimize for feature delivery. This is a terrible metric for success. It drives engineers to shortcut and so make bad decisions that end up with them going slower over time, not faster. Developers often try to please business by reducing the quality of their work. If you've ever given an estimate that didn't include testing or refactoring, you did this.
 *   Quality is a whole team responsibility. From a developer's perspective a significant part of that responsibility firmly sits with us; it is not something we can successfully abdicate to other people. If you see testing as somebody else's responsibility, QA as the gatekeepers of quality, your manager's job to tell you how much quality you can put in your code, you should think again.
 *   The first principal is that you must not fool yourself, and you're the easiest person to fool.
@@ -45,7 +50,7 @@ There aren't too many test frameworks that support that test strategy.. [Cypres
 *   TypeScript saves you so much time by preventing many programming mistakes & runtime errors, leaving you more time to do other things such as deciphering & fixing insignificant TypeScript errors. (David Khorshid)
 * `this` keyword in JavaScript will burn you one day. Then it will burn you again and again and again. If Dante Alighieri were alive today, he would put writing object-oriented JavaScript among one of the first levels of Hell for sure. ![[Pasted image 20220316143024.png]]
 
-## ACD
+
 -   strong opinions, weakly held
 -   be alert for possibilities of paragraphing
 -   most notice a single grain of sand, others see the flow through the hourglass
@@ -56,3 +61,5 @@ There aren't too many test frameworks that support that test strategy.. [Cypres
 -   leadership of creative people is mostly about enabling creative communication
 -   in danger of too violently agreeing with each other in the course of this conversation
 -   what's the point of it all if all you want is to be liked by everyone and avoid trouble. The only way I got any place was by breaking some of the rules.
+- More harm is caused in this world by stupidity and ignorance than outright evil. The incompetent and stupid are far more dangerous than those who are overtly evil, because we are never quite sure where they are leading us, until it is too late.
+-   Develop your sense of self worth from internal standards, and not incessant comparisons.

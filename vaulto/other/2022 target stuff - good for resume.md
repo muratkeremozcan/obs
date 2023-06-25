@@ -1,4 +1,4 @@
-## Which (1) Value was exemplified during H1 2022?
+ ## Which (1) Value was exemplified during H1 2022?
 **• Win Together**
 
 [Conditional branch protection for monorepos on Github](https://youtu.be/BFAou8IDTLQ) - _together we_ _reached industry standards in quality reinforcement_  

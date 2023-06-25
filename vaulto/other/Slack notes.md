@@ -1,6 +1,6 @@
-# Slack notes
+han# Slack notes
 ### rebase / merge master in #monorepo
-`git pull --rebase origin master` and force push with `git push --force` 
+`git pull --rebase origin main` and force push with `git push --force` 
 also try
 `git fetch`
 `git rebase -i origin/master`
@@ -21,6 +21,11 @@ Want to scaffold TypeScript specs?
 `npx @bahmutov/cly init --typescript`  
 Want to scaffold a bare minimum project?  
 `npx @bahmutov/cly init --bare (or -b)`
+
+## calculate number of commits 
+`git log --since="2023-01-01" -p apps/portal > commits.txt` 
+or 
+`git log --since="2023-01-01" -p apps/portal | grep "commit " | wc -l`
 
 ## package release troubles
 You need super_admin
@@ -205,3 +210,60 @@ Copy/paste regex
 
 ## Return object from a Cypress command
 ![[Pasted image 20220909074734.png]]
+
+
+## Flip method based on argument
+Instead of all the duplication, the whole thing can be customized with an argument added to the original `upsertOrder` function.
+
+Give it a default 'post' or 'put', and return the http request accordingly.
+
+Here is an example:
+```js
+/**
+ * Upserts an order with the given token, store ID, line items, API version, and order overrides.
+ * @param {object} options - An object containing options for the request.
+ * @param {string} options.token - The authentication token.
+ * @param {string} options.storeId - The ID of the store.
+ * @param {Array<object>} options.lineItems - An array of line item objects containing product information.
+ * @param {string} [options.httpMethod='PUT'] - The HTTP method to use, either 'put' or 'post'.
+ * @param {string} [options.apiVersion='latest'] - Optional API version to use.
+ * @param {object} [options.orderOverrides={}] - Optional overrides to apply to the generated order object.
+ * @returns {object} The response object from the API.*/
+export function upsertOrder({
+  token,
+  storeId,
+  lineItems,
+  httpMethod = 'PUT',
+  apiVersion = 'latest',
+  ordersOverrides = {},
+}) {
+  const params = {
+    headers: makeHeaders(token, apiVersion, {'X-Idempotency-Key': uuidv4()}),
+  }
+  const payload = generateOrder(storeId, lineItems, ordersOverrides)
+
+  // KEY
+  const httpMethods = {
+    PUT: http.put,
+    POST: http.post,
+  }
+
+  if (!httpMethods.hasOwnProperty(httpMethod)) {
+    throw new Error(
+      `Invalid HTTP method: ${httpMethod}. Allowed methods: put, post.`,
+    )
+  }
+
+  return httpMethods[httpMethod](`${baseUrl}/orders`, payload, params)
+}
+```
+
+We can further reduce the duplication by making the test (the original) `order.js` just include an extra line.
+
+    const orderResPut = upsertOrder({token, storeId, lineItems, httpMethod: 'PUT'})
+    checkResponse(orderResPut)
+
+    const orderResPost = upsertOrder({token, storeId, lineItems, httpMethod: 'POST'})
+    checkResponse(orderResPost)
+
+That's around 8 lines extra for the feature, and 2 lines for the test. Pretty much nothing else has to change compared to `main`; just the readme needs a tweak.
