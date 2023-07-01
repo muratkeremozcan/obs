@@ -12,7 +12,13 @@ also try
 ### re-run #GHA
 `git commit --allow-empty -n -m "re-run checks" && git push`
 
-### scaffold #Cypress with cly
+### Jira commit cheat sheet
+
+branch name:  `chore/DEVXTEST-666-foo-bar`
+commit message: `chore: [DEVXTEST-666] foo bar`
+
+
+\### scaffold #Cypress with cly
 Say you want to scaffold a new Cypress test:  
 `npm i -D cypress`  
 `npx @bahmutov/cly init` (may need to add -p here to install on the fly)  
