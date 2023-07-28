@@ -1,4 +1,4 @@
-han# Slack notes
+ihan# Slack notes
 ### rebase / merge master in #monorepo
 `git pull --rebase origin main` and force push with `git push --force` 
 also try
@@ -273,3 +273,4 @@ We can further reduce the duplication by making the test (the original) `order.
     checkResponse(orderResPost)
 
 That's around 8 lines extra for the feature, and 2 lines for the test. Pretty much nothing else has to change compared to `main`; just the readme needs a tweak.
+
