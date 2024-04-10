@@ -17,6 +17,7 @@
 -   Fallacy of false authority - expert in 1 field...
 -   If you aim at nothing, you hit nothing
 -   Doing the correct thing poorly is worth more than executing the wrong things perfectly
+-   The longer you wait to do the right thing, the harder it is to migrate later
 -   When you lose your money, you lose nothing. When you lose your health, you lose something. When you lose your character, you lose everything.
 -   ... once battle-testing has defeated real-world issues and edge cases ...
 -   ... trade offs that it made are no longer valuable

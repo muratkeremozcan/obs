@@ -1,4 +1,4 @@
-ihan# Slack notes
+ 
 ### rebase / merge master in #monorepo
 `git pull --rebase origin main` and force push with `git push --force` 
 also try
@@ -274,3 +274,198 @@ We can further reduce the duplication by making the test (the original) `order.
 
 That's around 8 lines extra for the feature, and 2 lines for the test. Pretty much nothing else has to change compared to `main`; just the readme needs a tweak.
 
+
+
+## Github wants SSH now, can't push https 
+Set ssh for the repo:
+`git remote set-url origin git@github.com:muratkeremozcan/aws-cdk-in-practice.git
+
+
+## deployments as of Sep 2023
+Yup right now the following behaviors are as followed:  
+
+1. Developer creates a PR and merges it to `main`
+2. Deployment occurs to `dev` automatically
+3. Right now we **manually** kick off a deployment to `stage` and prepare for `prod`
+4. These [tests](https://github.com/helloextend/authentication-service/blob/main/src/infrastructure/config/custom-actions.ts) are automatically kicked off after `stage` deploy has landed successfully
+5. Test reports are posted within deployment channels [#cy-deployment-security](https://extend-workspace.slack.com/archives/C05GQUHTYR5)
+6. After all of the tests looks good with a **manual** verification, we can **manually** approve the production gates and deploy.
+   
+   
+### sinon vs cypress-map + spok   
+Do you like the abstraction with Sinon or the concretion with cypress-map and cy-spok?
+```js
+cy.get('@someEvent')
+  .should('be.calledWith', 
+    'property', 
+    {
+      type: 'checkbox',
+      values: ['bar']
+    }
+   )
+
+
+import 'cypress-map'
+import spok from 'cy-spok'
+
+cy.get('@someEvent')
+  .invoke('getCalls')
+  .map('args')
+  .should(
+    spok([
+      [
+        'property',
+        {
+          type: 'checkbox',
+          values: ['bar'],
+        }
+      ]
+    ])
+  )
+```
+
+
+### Stubbing the event handler
+
+A technique for stubbing or spying on the behavior of a function prop within a React component during a Cypress test. Specifically, it concerns the `onChange` event of the `Select` component. Here's a breakdown and the significance of this pattern:
+
+```javascript
+const activeOption = 'a to z'
+const selectOption = cy.stub().as('selectOption')
+const select = (e) => selectOption(e.target.value)
+```
+
+1. **Initialization of `activeOption`**: 
+   - `const activeOption = 'a to z'`
+   This is just setting up a default active option for the `Select` component for the test.
+
+2. **Stubbing with Cypress**: 
+   - `const selectOption = cy.stub().as('selectOption')`
+   Here, we're creating a stub using Cypress and giving it an alias (`selectOption`). This stub will serve as a "fake" function that we can use to check if it's been called, how many times it's been called, and what arguments it was called with.
+
+3. **Stubbed Event Handler**:
+   - `const select = (e) => selectOption(e.target.value)`
+   This is an event handler that will be passed to the `Select` component for its `onChange` prop. Instead of doing any real action, it simply calls the stubbed function (`selectOption`) with the value of the selected option. This is crucial because it allows us to observe and assert interactions with the component.
+
+Use it when  **checking Prop Callbacks**: If a component expects a callback as a prop (like `onChange` in this case), this technique allows you to ensure that the callback is indeed being called with the right arguments.
+
+## process.env with Zod
+![[Screenshot 2024-02-23 at 8.27.49 AM.png]]
+
+## Retryable before hook in Cypress
+```js
+/**
+ * A `before()` alternative that gets run when a failing test is retried.
+ *
+ * By default cypress `before()` isn't run when a test below it fails
+ * and is retried. Because we use `before()` as a place to setup state
+ * before running assertions inside `it()` this means we can't make use
+ * of cypress retry functionality to make our suites more reliable.
+ *
+ * https://github.com/cypress-io/cypress/issues/19458
+ * https://stackoverflow.com/questions/71285827/cypress-e2e-before-hook-not-working-on-retries
+ */
+export const retryableBefore = (fn) => {
+  let shouldRun = true;
+
+  // we use beforeEach as cypress will run this on retry attempt
+  // we just abort early if we detected that it's already run
+  beforeEach(() => {
+    if (!shouldRun) return;
+    shouldRun = false;
+    fn();
+  });
+
+  // When a test fails we flip the `shouldRun` flag back to true
+  // so when cypress retries and runs the `beforeEach()` before
+  // the test that failed, we'll run the `fn()` logic once more.
+  Cypress.on('test:after:run', (result) => {
+    if (result.state === 'failed') {
+      if (result.currentRetry < result.retries) {
+        shouldRun = true;
+      }
+    }
+  });
+};
+
+describe('my suite', () => {
+  retryableBefore(() => {
+    // reset database and seed with test data …
+
+    cy.visit('/some/page');
+  });
+
+  it('my test 2', () => {
+    …
+  });
+
+  it('test 2', () => {
+    …
+  });
+  
+  describe('my suite', () => {
+    retryableBefore(() => {
+      // do something in ui
+    });
+
+    it('my test 3', () => {
+      …
+    });
+
+    it('test 4', () => {
+      …
+    });
+  });
+});
+
+```
+
+## Time zone in Cypress component or CT tests, local vs CI
+
+Local vs CI can have a difference, because the CI runs in a different time zone.
+For this, the time zone needs to be standardized.
+Use an env var:
+`TZ='Etc/GMT' npm run cypress open`
+
+If that doesn't work, you could try something like this:
+```js
+module.exports = (on, config) => {
+  on('before:browser:launch', (browser = {}, launchOptions) => {
+      launchOptions.args.push('--lang=en-US')
+      launchOptions.args.push('--timezone=Etc/GMT')
+      return launchOptions;
+    })
+}
+```
+
+## Setting a standard time zone with Cypress
+
+ `TZ='Etc/GMT' npm run cypress open` 
+ 
+ if that doesn't work, you could try something like this:
+
+```js
+module.exports = (on, config) => {
+  on('before:browser:launch', (browser = {}, launchOptions) => {
+      launchOptions.args.push('--lang=en-US')
+      launchOptions.args.push('--timezone=Etc/GMT')
+      return launchOptions;
+    })
+}
+```
+
+If that doesn't work, you could try standardizing the time zone in the app, some libs have that option.
+
+## Cypress drag and drop
+
+```js
+const dragAndDrop = (dragLocator, dropLocator) => {
+  cy.get(dragLocator)
+    .realMouseDown({ button: 'left', position: 'center' })
+    .realMouseMove(0, 10, { position: 'center' })
+    .wait(200);
+  cy.get(dropLocator)
+    .realMouseMove(0, 0, { position: 'center' })
+    .realMouseUp();
+};
+```
