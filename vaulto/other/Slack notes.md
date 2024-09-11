@@ -1,4 +1,4 @@
- 
+ak 
 ### rebase / merge master in #monorepo
 `git pull --rebase origin main` and force push with `git push --force` 
 also try
@@ -469,3 +469,191 @@ const dragAndDrop = (dragLocator, dropLocator) => {
     .realMouseUp();
 };
 ```
+
+
+## Cypress and Jest Types clashing
+
+For those having trouble with [Cypress.io](https://www.linkedin.com/feed/#) + Jest types in the same repo...
+
+I've seen that many are having trouble with this, and commented on a thread about the solution https://stackoverflow.com/questions/58999086/cypress-causing-type-errors-in-jest-assertions/78760148#78760148.
+
+The solutions about excluding certain Cypress related files from tsconfig.json.
+
+If we exclude cypress things from the main tsconfig.json, we stop getting typecheck errors from CLI even though the IDE will show them. That way, e2e and component cy files get messy with TS over time, and that's not good.
+
+If the problem is Jest types, isolate that to its own tsconfig. The 3 cypress items have to be excluded, but we include "**/.test.ts".
+
+At the main tsconfig.json exclude any jest file "**/.test.ts", and you're set.
+
+`tsconfig.json`
+```json
+{
+
+"types": [
+
+"@types/node",
+
+"cypress",
+
+"@testing-library/cypress",
+
+"cypress-real-events"
+
+],
+
+"exclude": [
+
+"**/*.test.ts*",
+
+],
+
+"compilerOptions": {
+
+}
+```
+`tsconfig.jest.json`
+```json
+{
+
+"extends": "./tsconfig.json",
+
+"exclude": [
+
+"**/cypress.d.ts",
+
+"**/cypress",
+
+"**/*.cy.tsx",
+
+],
+
+"types": ["@types/jest", "@types/node"],
+
+"include": [
+
+"**/*.test.ts*",
+
+],
+
+}
+```
+
+## TS path aliases with webpack and vite
+Path aliases are a game-changer when you're dealing with deep file structures and need to import files from other distant locations. Instead of struggling with relative imports, you can easily use:
+`import {something} from 'src/somewhere'
+`import {someFixture} from '@fixtures/network-stuff
+
+To set this up, TypeScript handles the IDE and Cypress e2e tests. However, for `src` files and Cypress component tests, you need to configure Webpack or Vite, depending on which bundler you're using. Both have an `alias` property where these paths are defined, and you simply match whatever is set in your `tsconfig.json`.
+
+![[Pasted image 20240723135111.png]]
+
+
+
+# Local Development, Testing & Mockoon (May 2024)
+
+## How does local testing relate to familiar testing types?
+
+### Testing handlers (unit or integration tests)
+
+- **Fast Feedback Loop**:
+    
+    - **Quick Iterations**: tests against the handler allows for faster feedback
+        
+    - **Easier Debugging**: Isolates the Lambda function for simpler debugging.
+        
+- **Partial Coverage**:
+    
+    - **Integration Points**: we can test how the Lambda interacts with DDB local, and anything in docker config (Kms, Kafka, etc.)
+        
+    - **Error Simulation**: Easier to simulate various scenarios, edge cases and failure conditions, by controlling the inputs to the handler.
+        
+- **Drawbacks**:
+    
+    - **Less Realistic**: Does not test the full path from the consumer's request to the final response, potentially missing configuration issues or integration problems outside the Lambda function.
+        
+    - **Requires Mocks for Some Scenarios**: To fully isolate the function, some dependencies might need to be mocked, which can lead to false positives.
+        
+
+### Testing deployments via http (ephemeral sandbox, dev, stage)
+
+- **Build & Configuration**: ensures all cloud resources are operational (cdk, env vars, secrets, API Gateway, Lambda functions, S3 buckets)
+    
+- **IAM Permissions**: ensures correct IAM permissions and roles.
+    
+- **Comprehensive Coverage**: Tests the entire system, including API Gateway, Lambda functions, authentication mechanisms, and integrations with other services.
+    
+- **Drawbacks**
+    
+    - Requires a deployment
+        
+    
+    - Slow feedback loop
+        
+
+### Testing local endpoints via http (local dev)
+
+- **Same tests locally versus deployments** - low or no additional cost to testing deployments
+    
+- **Easier to implement API interactions before any development** - rest client, postman, thunder client
+    
+- **Easy network mocking with Mockoon** - easy config, no code changes
+    
+- **None of the drawbacks of deployments** - no deployment, fast feedback
+    
+
+## What is Mockoon?
+
+Think of how `cy.intercept` mocks the network when testing UI. Mockoon mocks the network for API e2e.
+
+There is no code, just an Electron app we configure (record network) once, and maybe again when external schemas change. Mockoon records a json file for all its config, and we use the CLI mode thereafter.
+
+All the external network mocking resides in Mockoon. What we do not have there is proxied and acquired from our local server.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/0gvg11xfussdha348pi0.png)
+
+### How do we record the network with Mockoon?
+
+When recording external dependencies, we are not at all interested in our local server; therefore we modify the proxy to be a real deployment. This way, when reaching out for example stores, products, contracts, the proxy is used.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/v16zqg4qp6futx5o9ut8.png)
+
+### How can setup state for my local e2e if mocking the network is not enough
+
+We do not yet have true service isolation; our services still have to share a deployment.
+
+Sometimes mocking the network may not be enough; Store, Product etc. are network mocked but do not exist locally, what do we do?
+
+We can use the client of our service to seed our DDB local:
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/ivaohxdxuzvk88nw6sy1.png)
+
+## Demo
+
+0:08 / 10:20
+
+1x
+
+## How Local e2e and Ephemeral sandboxes compliment each other
+
+We execute the same tests in the PR side by side, ephemeral sandbox vs localhost:3000 + Mockoon + Local auth. This way we can reproduce any CI failures locally, and fully isolate them between our service vs build, config, deployment, IAM, etc..
+
+![[Pasted image 20240829055651.png]]
+
+## What is remaining for local dev?
+
+- Support for events
+    
+- Support for secrets
+    
+
+## What is the effort?
+
+- Migrating to Smerf _(we can do it for you)_
+    
+- One time local e2e setup _(we will do it for you)_
+    
+- Ongoing: might need to re-record the network if external schemas change
+
+
+## kill a port in use
+`lsof -ti :3000 | xargs kill -9`
