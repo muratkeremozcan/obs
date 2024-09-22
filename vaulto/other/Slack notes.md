@@ -657,3 +657,13 @@ We execute the same tests in the PR side by side, ephemeral sandbox vs localhost
 
 ## kill a port in use
 `lsof -ti :3000 | xargs kill -9`
+
+## cypress stub assertions
+
+be.calledWith
+vs
+.invoke('getCalls')
+.map('args')
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/aqjsa3lf05bc04rmn0bg.png)
+
