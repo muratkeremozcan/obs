@@ -341,11 +341,9 @@ npm run record:consumer:deployment # (5)
 
 ## Provider-driven (bi-directional) contract testing
 
-Consumer-Driven Contract Testing is highly effective when the consumer has a close relationship with the provider, typically within the same organization. However, when dealing with third-party providers, especially those who might not be aware of or prioritize the specific needs of any single consumer, this approach becomes unfeasible.
+Consumer-Driven Contract Testing is highly effective when the consumer has a close relationship with the provider, typically within the same organization. However, when dealing with third-party providers, especially those who might not be aware of or prioritize the specific needs of any single consumer, this approach becomes unfeasible. It might also happen that the provider is not testable locally, which makes running the tests from the consumer impossible on the provider side.
 
-**Unknown Consumers**: In some cases, a third-party provider may not even know who all of their consumers are. They provide a public API, and various clients may interact with it. In such scenarios, it’s impractical for the provider to tailor their API to specific consumer-driven contracts.
-
-**Provider-Driven Contract Testing** makes more sense in these situations. The provider defines the contract (API specification), and it’s up to the consumers to align with this specification. This shifts the responsibility to the consumer to ensure that they are compatible with the provider’s API, rather than the other way around.
+**Provider-Driven Contract Testing** makes more sense in these situations. The provider defines the contract (OpenAPI specification), and it’s up to the consumers to align with this specification. This shifts the responsibility to the consumer to ensure that they are compatible with the provider’s API, rather than the other way around.
 
 The flow:
 
@@ -358,7 +356,66 @@ The key difference in this approach is that instead of the provider running the 
 
 **Caveat**: **Risk of False Confidence**: Since the testing is based on the OpenAPI spec of the provider rather than the actually running the consumer tests (the contract) on the provider side, there's a risk that the contract might not fully capture the nuances of the provider's implementation. This could lead to scenarios where a contract is deemed compatible even though the actual service could fail in production. This risk emphasizes the importance of maintaining up-to-date and accurate contracts.
 
-(This gap could be addressed with [generating OpenAPI docs from types](https://dev.to/muratkeremozcan/automating-api-documentation-a-journey-from-typescript-to-openapi-and-schema-governence-with-optic-ge4), or generating OpenAPI spec from e2e (an Optic feature))
+(This gap could be addressed with [generating OpenAPI docs from types](https://dev.to/muratkeremozcan/automating-api-documentation-a-journey-from-typescript-to-openapi-and-schema-governence-with-optic-ge4), or Zod-to-openapi (`@asteasolutions/zod-to-openapi`) or generating OpenAPI spec from e2e (an Optic feature)). We can also test the schema via a Cypress plugin `cypress-ajv-schema-validator` chaining on to already existing api calls.
+
+With bi-directional contract testing, the consumer and the provider workflows are detached; the provider independently publishes their OpenAPI spec (to main) and the consumer tests against it.
+
+Here is how it goes:
+
+1) **Generate the OpeAPI spec at the provider**
+
+   Automate this step using tools like `zod-to-openapi`,  `swagger-jsdoc`,  [generating OpenAPI documentation directly from TypeScript types, or generating the OpenAPI spec from e2e tests (using Optic)](https://dev.to/muratkeremozcan/automating-api-documentation-a-journey-from-typescript-to-openapi-and-schema-governence-with-optic-ge4). Manual spec writing is the last resort..
+
+2) **Ensure that the spec matches the real API**
+
+   `cypress-ajv-schema-validator`: if you already have cy e2e and you want to easily chain on to the existing calls.
+
+   Optic: lint the schema and/or run the e2e suite against the OpenAPI spec through the Optic proxy.
+
+   Dredd: executes its own tests (magic!) against your openapi spec (eeds your local server, has hooks for things like auth.)
+
+3) **Publish the OpenAPI spec to the pact broker**.
+
+   ```bash
+   pactflow publish-provider-contract 
+     src/api-docs/openapi.json # path to OpenAPI spec
+     # if you also have classic CDCT in the same provider, 
+     # make sure to label the Bi-directional provider name differently
+     --provider MoviesAPI-bi-directional 
+     --provider-app-version=$GITHUB_SHA # best practice
+     --branch=$GITHUB_BRANCH # best practice
+     --content-type application/json # yml ok too if you prefer
+     --verification-exit-code=0 # needs it
+      # can be anything, we just generate a file on e2e success to make Pact happy
+     --verification-results ./cypress/verification-result.txt
+     --verification-results-content-type text/plain # can be anything
+     --verifier cypress # can be anything
+   ```
+
+   Note that verification arguments are optional, and without them you get a warning at Pact broker that the OpenAPI spec is untested.
+
+4) **Execute the consumer contract tests**
+
+As you can notice, there is nothing about running the consumer tests on the provider side ( `test:provider`), can-i-deploy checks (`can:i:deploy:provider`), or recording the pact deployment (`record:provider:deployment`).
+
+We have a sample consumer repo for BDCT [pact-js-example-react-consumer](https://github.com/muratkeremozcan/pact-js-example-react-consumer).
+
+The [api calls](https://github.com/muratkeremozcan/pact-js-example-react-consumer/blob/main/src/consumer.ts) are the same as the plain, non-UI app used int CDCT ([link](https://github.com/muratkeremozcan/pact-js-example-consumer/blob/main/src/consumer.ts)).
+
+We cannot have CDCT and BDCT in the same contract relationship. Although, we can have the provider have consumer driven contracts with some consumers and provider driven contracts with others
+
+```bash
+Consumer        -> CDCT  -> Provider
+
+Consumer-React  <- BDCT  <- Provider
+```
+
+BDCT Scripts on the provider:
+
+```bash
+npm run generate:openapi # generates an OpenAPI doc from Zod schemas
+npm run publish:pact-openapi # publishes the open api spec to Pact Broker for BDCT
+```
 
 ### Cypress adapter in a nutshell
 
@@ -428,32 +485,49 @@ By combining Optic for upfront schema validation and Pact for deeper contract ve
 
 Based on the excellent [Contract Testing in Action](https://www.manning.com/books/contract-testing-in-action) book by Marie Cruz and Lewis Prescott, these are my interpretations of the examples.
 
-They are a work in progress, here is my todo list:
+They are a work in progress, here are the PRs so far:
 
-- start-server-and-test
+- provider
+  - [switch to TS](https://github.com/muratkeremozcan/pact-js-example-provider/pull/5)
+  - [merge-gatekeeper](https://github.com/muratkeremozcan/pact-js-example-provider/pull/6)
+  - [Strengthening Pact Contract Testing with TypeScript and Data Abstraction](https://github.com/muratkeremozcan/pact-js-example-provider/pull/7)
+  - [prisma](https://github.com/muratkeremozcan/pact-js-example-provider/pull/8)
+  - [hex-pattern](https://github.com/muratkeremozcan/pact-js-example-provider/pull/9)
+  - [unit tests](https://github.com/muratkeremozcan/pact-js-example-provider/pull/10)
+  - [start-server-and-test](https://github.com/muratkeremozcan/pact-js-example-provider/pull/11)
+  - [cy at provider ](https://github.com/muratkeremozcan/pact-js-example-provider/pull/12)
+  - [use global-setup and global-teardown on provider, use tsx vs ts-node](https://github.com/muratkeremozcan/pact-js-example-provider/pull/15)
+  - (types to openapi) [central types, then use them at repository, service and adapter](https://github.com/muratkeremozcan/pact-js-example-provider/pull/16)
+  - (types to openapi)[ ](https://github.com/muratkeremozcan/pact-js-example-provider/pull/17)`ts-json-schema-generator`[ +  ](https://github.com/muratkeremozcan/pact-js-example-provider/pull/17)`openapi-types`[ vs zod to openapi](https://github.com/muratkeremozcan/pact-js-example-provider/pull/17)
+  - [optic at provider](https://github.com/muratkeremozcan/pact-js-example-provider/pull/18), [zod2Openapi part 2](https://github.com/muratkeremozcan/pact-js-example-provider/pull/19), [zor2Openapi part 3](https://github.com/muratkeremozcan/pact-js-example-provider/pull/21)
+  - [npm audit, renovate, badges](https://github.com/muratkeremozcan/pact-js-example-provider/pull/22)
+  - [pactv4 at provider](https://github.com/muratkeremozcan/pact-js-example-provider/pull/25) 
+  - [test hook improvements](https://github.com/muratkeremozcan/pact-js-example-provider/pull/28)
+  - [cypress schema validator](https://github.com/muratkeremozcan/pact-js-example-provider/pull/29)
+  - [selective testing step 1 - select by consumer](https://github.com/muratkeremozcan/pact-js-example-provider/pull/40)
+  - [ability to handle breaking changes](https://github.com/muratkeremozcan/pact-js-example-provider/pull/54)
+  - [buildVerifierOptions utility at the provider](https://github.com/muratkeremozcan/pact-js-example-provider/pull/57)
+  - [provider cors support](https://github.com/muratkeremozcan/pact-js-example-provider/pull/59)
+  - [Bi Directional Contract Testing setup at provider](https://github.com/muratkeremozcan/pact-js-example-provider/pull/60)
+- consumer
+  - [ts at consumer](https://github.com/muratkeremozcan/pact-js-example-consumer/pull/13)
+  - [cy & mockoon at consumer ](https://github.com/muratkeremozcan/pact-js-example-consumer/pull/16)
+  - [jest at consumer (nock)](https://github.com/muratkeremozcan/pact-js-example-consumer/pull/17)
+  - [npm audit, renovate, badges](https://github.com/muratkeremozcan/pact-js-example-consumer/pull/20)
+  - [update readme on both sides](https://github.com/muratkeremozcan/pact-js-example-provider/pull/23)
+  - [pact v4 consumer](https://github.com/muratkeremozcan/pact-js-example-consumer/pull/23)
+  - [setJsonBody test util on consumer](https://github.com/muratkeremozcan/pact-js-example-consumer/pull/24)
+- consumer-react
+  - [feat/ui-for-crud-movie](https://github.com/muratkeremozcan/pact-js-example-react-consumer/pull/4)
+  - [feat/react-query for react consumer](https://github.com/muratkeremozcan/pact-js-example-react-consumer/pull/5)
+  - [break down componets, cy e2e, cyct](https://github.com/muratkeremozcan/pact-js-example-react-consumer/pull/6)
+  - [zod at UI](https://github.com/muratkeremozcan/pact-js-example-react-consumer/pull/9)
 
-- switch to TS
+And here's the todo list
 
-- use sqlite, instead of in memory data
-
-- zod
-
-- unit tests at provider
-
-- status badges
-
-- setup renovate
-
-- merge gatekeeper
-
-- cy
-
-- optic at provider
-
-- mockoon at consumer
+* Bi-directional contract testing at consumer-react
 
 - changes
-
   - change movie path to movies
   - standerdized responses { status, data, message }
   - make the data a lot more complex to exercise the matchers
@@ -462,3 +536,5 @@ They are a work in progress, here is my todo list:
 https://github.com/muratkeremozcan/pact-js-example-consumer
 
 https://github.com/muratkeremozcan/pact-js-example-provider
+
+https://github.com/muratkeremozcan/pact-js-example-react-consumer

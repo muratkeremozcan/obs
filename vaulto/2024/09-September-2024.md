@@ -49,3 +49,10 @@ define: {
 
 
 ## Week of 09-23-2025
+* [start:preview prod on Portal](https://github.com/helloextend/portal-web-app/pull/231) @testing
+* make stage similar to prod [client-helpers](https://github.com/helloextend/client-helpers/pull/122) [portal](https://github.com/helloextend/portal-web-app/pull/238) @testing
+* [Portal: switch to vite:build again](https://github.com/helloextend/portal-web-app/pull/243) @testing
+## Week of 09-30-2025
+* ci-build-id [at GHA repo](https://github.com/helloextend/gha-reusable-workflows/pull/843) and [portal](https://github.com/helloextend/portal-web-app/pull/252) (cy blacksmith action, ct at 6 mins)
+* [Portal cyct under 5mins](https://github.com/helloextend/portal-web-app/pull/254)
+* no success so far [vite in ci ticket](https://github.com/helloextend/portal-web-app/pull/259)
