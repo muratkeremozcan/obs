@@ -667,3 +667,18 @@ vs
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/aqjsa3lf05bc04rmn0bg.png)
 
+### find a file in bash
+`find . -name "*-api.json"
+
+
+## Docker craps out with kafka
+
+```bash
+# stop docker containers
+
+docker volume ls
+
+docker volume rm events_kafka_data # or whatever
+
+# start docker containers
+```

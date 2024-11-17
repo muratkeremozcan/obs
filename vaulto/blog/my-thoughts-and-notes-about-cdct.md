@@ -4,6 +4,40 @@ I've recently been diving deep into the world of contract testing, guided by the
 
 This post encapsulates my notes, interpretations, reflections, and thoughts on how the principles from the book align with my own experiences, and how they can be effectively integrated into a real-world testing and development workflow.
 
+- [Contract Testing](#contract-testing)
+- [Consumer side](#consumer-side)
+- [Provider side](#provider-side)
+- [The Pact Broker](#the-pact-broker)
+  - [Example new release scenario:](#example-new-release-scenario)
+    - [Environments:](#environments)
+    - [Pact Broker's Role:](#pact-brokers-role)
+  - [**SaaS (PactFlow) vs. Self-Hosted Pact Broker**](#saas-pactflow-vs-self-hosted-pact-broker)
+- [PactBroker CI/CD \& key features](#pactbroker-cicd--key-features)
+  - [The matrix:](#the-matrix)
+  - [**can-i-deploy**](#can-i-deploy)
+  - [**Webhooks:**](#webhooks)
+- [Provider-driven (bi-directional) contract testing](#provider-driven-bi-directional-contract-testing)
+  - [Cypress adapter in a nutshell](#cypress-adapter-in-a-nutshell)
+- [CDCT vs e2e vs integration vs schema testing](#cdct-vs-e2e-vs-integration-vs-schema-testing)
+  - [Testing Lambda Handlers (Unit or Integration Tests)](#testing-lambda-handlers-unit-or-integration-tests)
+  - [Testing Deployments via HTTP (Temporary Stack, Dev, Stage)](#testing-deployments-via-http-temporary-stack-dev-stage)
+  - [Testing Local Endpoints via HTTP (Local)](#testing-local-endpoints-via-http-local)
+  - [CDCT (Contract-Driven Contract Testing)](#cdct-contract-driven-contract-testing)
+  - [What kind of e2e testing would you replace with contract testing?](#what-kind-of-e2e-testing-would-you-replace-with-contract-testing)
+  - [How does CDCT fit with schema testing (Optic)?](#how-does-cdct-fit-with-schema-testing-optic)
+- [Message Queue testing](#message-queue-testing)
+  - [Purpose of Message Queue Testing](#purpose-of-message-queue-testing)
+  - [Example Scenario:](#example-scenario)
+  - [Message queue consumer tests in short](#message-queue-consumer-tests-in-short)
+  - [Message queue provider tests in short](#message-queue-provider-tests-in-short)
+    - [Execution (Same as traditional CDCT)](#execution-same-as-traditional-cdct)
+  - [`messageProviders` vs `stateHandlers` on the producer/provider side](#messageproviders-vs-statehandlers-on-the-producerprovider-side)
+- [Breaking changes](#breaking-changes)
+    - [Real-World Scenarios](#real-world-scenarios)
+    - [Workarounds (to blasphemy)](#workarounds-to-blasphemy)
+      - [Pending vs. WIP Pacts](#pending-vs-wip-pacts)
+  - [Sample repos](#sample-repos)
+
 ## Contract Testing
 
 Contract testing ensures that two systems (e.g., a web application and an API, or 2 APIs) have a shared understanding of expectations, verified through a "contract", usually a json file that captures the interactions between the systems. It's particularly useful in microservices architectures.
@@ -47,6 +81,7 @@ Contract testing ensures that two systems (e.g., a web application and an API, o
 
 - **Consumer-Driven Contract Testing (CDCT):** Focuses on the consumer creating the contract, ideal for greenfield projects and organizations committed to contract testing.
 - **Provider-Driven Contract Testing (PDCT):** Uses existing OpenAPI specifications of the provider and executes the consumer tests against that, instead of the traditional provider side test execution (of the contract) against the locally served provider service.
+- **Message Queue Testing**: meant for systems that communicate asynchronously using **message queues** instead of direct HTTP requests. Examples of message-based systems include RabbitMQ, Kafka, AWS SQS or EventBridge.
 
 **Communication Types Supported:**
 
@@ -78,17 +113,20 @@ Here is how it works:
 Here's how a test generally looks:
 
 ```js
-// ...provider setup prior...
+// consumer test
 
 it('...', () => {
-  provider
-    // specifications about how the provider
-    // should behave upon receving requests
-    // this part is what really configures the contract
+  await pact
+    // simulate/specify how the provider should respond
+    .addInteraction(...)
+    .given(some state name) // optional
+    .uponReceiving(<the name of the test>)
+    .withRequest(http verb, path)
+    .willRespondWith({ this is the meat and bones of the response })
 
-  await provider.executeTest(async(mockProvider) => {
-
-    // assertions against the mockProvider/contract
+    .executeTest(async(mockProvider) => {
+    // call the source code &
+    // make assertions against the mockProvider/contract
   })
 })
 ```
@@ -183,11 +221,10 @@ Here is how the test generally looks:
 const options = {..} // most the work is here (ex: provider states)
 const verifier = new Verifier(options)
 
-it('should validate the expectations..', () => {
-  return verifier.verifyProvider().then((output) => {
-    console.log('Pact Verification Complete!')
-    console.log('Result:', output)
-  })
+it('should validate the expectations..', async () => {
+  const output = await verifier.verifyProvider()
+  console.log('Pact Verification Complete!')
+  console.log('Result:', output)
 })
 ```
 
@@ -356,32 +393,32 @@ The key difference in this approach is that instead of the provider running the 
 
 **Caveat**: **Risk of False Confidence**: Since the testing is based on the OpenAPI spec of the provider rather than the actually running the consumer tests (the contract) on the provider side, there's a risk that the contract might not fully capture the nuances of the provider's implementation. This could lead to scenarios where a contract is deemed compatible even though the actual service could fail in production. This risk emphasizes the importance of maintaining up-to-date and accurate contracts.
 
-(This gap could be addressed with [generating OpenAPI docs from types](https://dev.to/muratkeremozcan/automating-api-documentation-a-journey-from-typescript-to-openapi-and-schema-governence-with-optic-ge4), or Zod-to-openapi (`@asteasolutions/zod-to-openapi`) or generating OpenAPI spec from e2e (an Optic feature)). We can also test the schema via a Cypress plugin `cypress-ajv-schema-validator` chaining on to already existing api calls.
+> This gap could be addressed with [generating OpenAPI docs from types](https://dev.to/muratkeremozcan/automating-api-documentation-a-journey-from-typescript-to-openapi-and-schema-governence-with-optic-ge4), or Zod-to-openapi (`@asteasolutions/zod-to-openapi`) or generating OpenAPI spec from e2e (an Optic feature)). We can also test the schema via a Cypress plugin `cypress-ajv-schema-validator` chaining on to already existing api calls.
 
 With bi-directional contract testing, the consumer and the provider workflows are detached; the provider independently publishes their OpenAPI spec (to main) and the consumer tests against it.
 
 Here is how it goes:
 
-1) **Generate the OpeAPI spec at the provider**
+1. **Generate the OpeAPI spec at the provider**
 
-   Automate this step using tools like `zod-to-openapi`,  `swagger-jsdoc`,  [generating OpenAPI documentation directly from TypeScript types, or generating the OpenAPI spec from e2e tests (using Optic)](https://dev.to/muratkeremozcan/automating-api-documentation-a-journey-from-typescript-to-openapi-and-schema-governence-with-optic-ge4). Manual spec writing is the last resort..
+   Automate this step using tools like `zod-to-openapi`, `swagger-jsdoc`, [generating OpenAPI documentation directly from TypeScript types, or generating the OpenAPI spec from e2e tests (using Optic)](https://dev.to/muratkeremozcan/automating-api-documentation-a-journey-from-typescript-to-openapi-and-schema-governence-with-optic-ge4). Manual spec writing is the last resort..
 
-2) **Ensure that the spec matches the real API**
+2. **Ensure that the spec matches the real API**
 
    `cypress-ajv-schema-validator`: if you already have cy e2e and you want to easily chain on to the existing calls.
 
    Optic: lint the schema and/or run the e2e suite against the OpenAPI spec through the Optic proxy.
 
-   Dredd: executes its own tests (magic!) against your openapi spec (eeds your local server, has hooks for things like auth.)
+   Dredd: executes its own tests (magic!) against your openapi spec (feeds your local server, has hooks for things like auth.)
 
-3) **Publish the OpenAPI spec to the pact broker**.
+3. **Publish the OpenAPI spec to the pact broker**.
 
    ```bash
-   pactflow publish-provider-contract 
+   pactflow publish-provider-contract
      src/api-docs/openapi.json # path to OpenAPI spec
-     # if you also have classic CDCT in the same provider, 
+     # if you also have classic CDCT in the same provider,
      # make sure to label the Bi-directional provider name differently
-     --provider MoviesAPI-bi-directional 
+     --provider MoviesAPI-bi-directional
      --provider-app-version=$GITHUB_SHA # best practice
      --branch=$GITHUB_BRANCH # best practice
      --content-type application/json # yml ok too if you prefer
@@ -394,7 +431,7 @@ Here is how it goes:
 
    Note that verification arguments are optional, and without them you get a warning at Pact broker that the OpenAPI spec is untested.
 
-4) **Execute the consumer contract tests**
+4. **Execute the consumer contract tests**
 
 As you can notice, there is nothing about running the consumer tests on the provider side ( `test:provider`), can-i-deploy checks (`can:i:deploy:provider`), or recording the pact deployment (`record:provider:deployment`).
 
@@ -402,7 +439,7 @@ We have a sample consumer repo for BDCT [pact-js-example-react-consumer](https:/
 
 The [api calls](https://github.com/muratkeremozcan/pact-js-example-react-consumer/blob/main/src/consumer.ts) are the same as the plain, non-UI app used int CDCT ([link](https://github.com/muratkeremozcan/pact-js-example-consumer/blob/main/src/consumer.ts)).
 
-We cannot have CDCT and BDCT in the same contract relationship. Although, we can have the provider have consumer driven contracts with some consumers and provider driven contracts with others
+We cannot have CDCT and BDCT in the same contract relationship. Although, we can have the provider have consumer driven contracts with some consumers and provider driven contracts with others.
 
 ```bash
 Consumer        -> CDCT  -> Provider
@@ -481,57 +518,250 @@ Optic offers a low-cost, quick solution for schema validation by focusing solely
 
 By combining Optic for upfront schema validation and Pact for deeper contract verification, you can achieve a more comprehensive approach to API testing.
 
+## Message Queue testing
+
+Message-based testing, like the one described in the [Pact documentation on message queues](https://docs.pact.io/implementation_guides/javascript/docs/messages), is meant for systems that communicate asynchronously using **message queues** instead of direct HTTP requests. Examples of message-based systems include RabbitMQ, Kafka, AWS SQS or EventBridge.
+
+Here’s the difference:
+
+1. **Consumer-Driven Contract Testing (Standard Pact)**:
+
+   - Focuses on direct HTTP requests (e.g., REST API).
+   - The consumer sends a request and expects the provider to respond directly.
+   - The contract defines these interactions (e.g., "When I make a GET request to `/movies`, I expect a response with a list of movies").
+
+2. **Message Queue Testing (Pact with Messaging)**:
+   - Instead of HTTP requests, services exchange messages via a message queue (asynchronous).
+   - **Consumer** in this context is the service **consuming messages from a queue** (not making requests to the provider).
+   - **Provider** is the service **publishing messages to the queue**.
+   - The contract defines what messages the provider is expected to send or receive, but there is no direct request-response. It’s about verifying the structure and content of the messages flowing through the queue.
+   - Example: Instead of sending a request to get data, the consumer might subscribe to a message topic or queue, and the provider sends messages through that queue.
+
+### Purpose of Message Queue Testing
+
+You care about message queues when:
+
+- **Asynchronous Communication**: The consumer and provider don’t talk directly through HTTP requests but communicate through a third party (e.g., RabbitMQ or Kafka).
+- **Event-Driven Architecture**: Systems using event-driven patterns often use queues. The provider might broadcast events like “Order Placed” or “Movie Created,” and the consumer listens for those events.
+- **Ensuring Decoupled Communication**: Just as with direct HTTP contract testing, message queue testing ensures that the consumer and provider agree on the format and content of messages exchanged, even though they’re not communicating synchronously.
+
+### Example Scenario:
+
+Imagine a system where:
+
+- **Provider** (e.g., a payment service) doesn’t respond to HTTP requests directly but publishes a message to a queue saying, “Payment Processed.”
+- **Consumer** (e.g., an order system) listens to this queue for a message saying, “Payment Processed,” and takes action when it receives that message.
+
+In this case, you'd want to test that:
+
+1. The **provider** correctly publishes the "Payment Processed" message in the right format.
+2. The **consumer** knows how to handle that message and react accordingly.
+
+This is where Pact’s message testing comes in handy.
+
+### Message queue consumer tests in short
+
+1. Write the consumer test.
+
+   Message q consumer test: **simulates receiving a message from the queue**.
+
+   Traditional consumer test: **simulates receiving a response from the provider**.
+
+2. Execute the and generate a contract / pact / json file. (same)
+
+   The message queue contract **specifies the expected structure of the message from the producer.**
+
+   Traditional consumer test contract **specifies the expected structure of the response from the provider**.
+
+3. Once the contract is created, Pact `mockProducer` takes over as if we are locally pushing messages to the queue (`expectsToReceive`) and verifying the message agains our src code event-message-consumer-handler.
+
+   This is similar to traditional consumer test where the `mockProvider` takes over as if we are locally serving the provider API and executing the tests against that.
+
+4. The test can fail at the `verify` portion, if / when the simulated message does not match our src code event-message-consumer.
+
+   This is similar to a traditional consumer test where the test can only fail at `executeTest` portion, if / when the assertions do not match the specifications.
+
+Here is a contract test vs message queue test side by side:
+
+```typescript
+// message queue consumer test
+
+it('...', () => {
+  await messagePact
+    // simulate/specify the expected message
+    .expectsToReceive('some text for event name')
+    .withContent({ this is the meat and bones of the event })
+    .withMetaData({ contentType: 'application/json' })
+
+    // feed the message into the event consumer
+    .verify(asynchronousBodyHandler(yourEventConsumerHandler))
+  })
+})
+```
+
+```typescript
+// consumer test
+
+it('...', () => {
+  await pact
+    // simulate/specify how the provider should respond
+    .addInteraction(...)
+    .given(some state name) // optional
+    .uponReceiving(the name of the test)
+    .withRequest(http verb, path)
+    .willRespondWith({ this is the meat and bones of the response })
+
+    .executeTest(async(mockProvider) => {
+    // call the source code &
+    // make assertions against the mockProvider/contract
+  })
+})
+```
+
+The flow is the same as a traditional consumer test, in fact if the repo has both, both tests are executed
+
+```bash
+npm run test:consumer
+npm run publish:pact
+```
+
+### Message queue provider tests in short
+
+These tests verify that **the messages the provider produces match the structure the consumer expects**.
+
+In contrast, in traditional CDCT, the tests verify that **the responses of the provider API match the structure the consumer expects**.
+
+1. The message consumer already generated the contract and published it. (Same thing as the traditional CDCT)
+
+2. The provider has one test per consumer to ensure all is satisfactory. Most of the file is about setting up the options. (Again, same)
+
+3. We ensure that the provider api is running locally. (Again, same)
+
+4. **The message queue consumer tests execute against the provider/message-producer**, as if they are a regular message-consumer running locally.
+
+   In contrast, in traditional CDCT, **the consumer tests execute against the provider api**, as if they are a regular API client running locally.
+
+#### Execution (Same as traditional CDCT)
+
+Run the server/service.
+
+```bash
+npm run start
+```
+
+> The provider/producer server/service has to be running locally for the provider message queue tests to be executed.
+
+Run the provider/producer message queue test
+
+```bash
+npm run test:provider
+```
+
+Two in one:
+
+```bash
+npm run test:provider:ci
+```
+
+### `messageProviders` vs `stateHandlers` on the producer/provider side
+
+In message queue testing, `messageProviders` define the messages the provider should produce.
+
+Each key is an event (e.g., 'movie-created') linked to a handler (`providerWithMetadata` from Pact) that generates the message.
+
+Metadata like contentType ensures correct message format interpretation.
+
+In traditional CDCT, `stateHandlers` (although optional) are the primary way of setting the test state prior to a consumer test executing against the provider.
+
+```typescript
+// messageProvider example
+
+import { providerWithMetadata } from "@pact-foundation/pact";
+import { produceEvent } from "your-event-producer";
+
+export const messageProviders = {
+  "a create event": providerWithMetadata(
+    () => produceEvent(entity, "created"),
+    { contentType: "application/json" }
+  ),
+  "an update event": providerWithMetadata(
+    () => produceEvent(entity, "updated"),
+    { contentType: "application/json" }
+  ),
+  "a movie-deleted event": providerWithMetadata(
+    () => produceEvent(entity, "deleted"),
+    { contentType: "application/json" }
+  ),
+};
+```
+
+```typescript
+// stateHandler example
+import type { AnyJson } from '@pact-foundation/pact/src/common/jsonTypes'
+
+export const stateHandlers: = {
+  'Has an entity with a specific ID': async (params: AnyJson) => {
+    const { id } = params // params are passed in from the consumer test
+
+    // some logic to create the entity
+
+    return {
+      description: `Entity with ID ${id} is set up.`
+    }
+  },
+  'An existing entity exists': async (params: AnyJson) => {
+    const { name, year } = params // whatever params
+
+    // some logic to create the entity
+
+    return {
+      description: `Movie with name "${name}" is set up.`
+    }
+  },
+  'No entitiess exist': {
+    // with state handlers we also have granular control
+    // of the state before and the after the test from the consumer
+    setup: async () => {
+      await truncateTables() // clean up the db, however you do it
+    },
+    teardown: async () => {
+      console.log('Teardown of state No movies exist ran...')
+      // Logic to restore default entities or clean up further can go here.
+    }
+  }
+```
+
+## Breaking changes
+
+You have really two good options, and additional workarounds, depending on the coordination and maturity of your teams.
+
+**Coordinating Matching PRs:** When a breaking change is needed, both teams (provider and consumer) collaborate in tandem. They create matching feature branches or PRs, ensuring that the consumer can adopt the new changes as the provider introduces them. This prevents downtime or breaking of functionality and ensures that both services are always compatible.
+
+**Backward Compatibility:** If synchronizing changes isn't feasible, the provider introduces a backward-compatible update that supports both the old and the new versions of the contract. This allows the consumer to gradually adopt the new behavior while the old functionality is deprecated over time. Once the consumer has fully migrated to the new behavior, the old behavior can safely be removed.
+
+#### Real-World Scenarios
+
+- **Coordinated matching PRs (preferred)**: If both consumer and provider teams communicate and align changes in their respective services, this should be your go-to approach. It's clean, avoids breaking things, and is more controlled.
+
+- **Backward compatibility (fallback)**: If immediate synchronization isn't possible, backward compatibility ensures the system continues to function as expected until the consumer adopts the new features.
+
+#### Workarounds (to blasphemy)
+
+- **Pending pacts (safety net)** `enablePending`: It's there to prevent unnecessary test failures if a consumer inadvertently introduces a breaking change without proper alignment. It essentially provides a "grace period" to allow providers time to adapt without blocking deployment, particularly useful in larger, less-coordinated teams or projects with complex dependencies.
+
+- **WIP pacts (experimental features)** `includeWipPactsSince` : WIP pacts come into play when consumers are working on experimental or long-running feature branches that haven't yet been finalized. WIP pacts give providers a heads-up that the consumer is working on something new, but **won't block the provider's build if they don't support it yet**. Think of it as a way to handle feature branches that are in progress but haven’t been fully integrated. This is useful when teams are working on new features in parallel but aren't ready to fully verify everything against the provider yet. The provider can continue working without failing for pacts that aren't fully baked. It gets removed before the merge to main.
+
+##### Pending vs. WIP Pacts
+
+- **Pending Pacts** are for **unexpected or uncoordinated breaking changes**. They provide a temporary buffer where the provider tests won’t fail immediately if a consumer introduces breaking changes, allowing the provider time to catch up.
+
+- **WIP Pacts** are for **work-in-progress or experimental features** in long-running feature branches. The provider acknowledges that the consumer is working on something but doesn’t yet block the provider from progressing with their build if those changes aren’t supported yet.
+
+Both are "workarounds" but solve slightly different problems in chaotic or asynchronous environments. In well-coordinated environments, you should not need either of these.
+
 ### Sample repos
 
 Based on the excellent [Contract Testing in Action](https://www.manning.com/books/contract-testing-in-action) book by Marie Cruz and Lewis Prescott, these are my interpretations of the examples.
-
-They are a work in progress, here are the PRs so far:
-
-- provider
-  - [switch to TS](https://github.com/muratkeremozcan/pact-js-example-provider/pull/5)
-  - [merge-gatekeeper](https://github.com/muratkeremozcan/pact-js-example-provider/pull/6)
-  - [Strengthening Pact Contract Testing with TypeScript and Data Abstraction](https://github.com/muratkeremozcan/pact-js-example-provider/pull/7)
-  - [prisma](https://github.com/muratkeremozcan/pact-js-example-provider/pull/8)
-  - [hex-pattern](https://github.com/muratkeremozcan/pact-js-example-provider/pull/9)
-  - [unit tests](https://github.com/muratkeremozcan/pact-js-example-provider/pull/10)
-  - [start-server-and-test](https://github.com/muratkeremozcan/pact-js-example-provider/pull/11)
-  - [cy at provider ](https://github.com/muratkeremozcan/pact-js-example-provider/pull/12)
-  - [use global-setup and global-teardown on provider, use tsx vs ts-node](https://github.com/muratkeremozcan/pact-js-example-provider/pull/15)
-  - (types to openapi) [central types, then use them at repository, service and adapter](https://github.com/muratkeremozcan/pact-js-example-provider/pull/16)
-  - (types to openapi)[ ](https://github.com/muratkeremozcan/pact-js-example-provider/pull/17)`ts-json-schema-generator`[ +  ](https://github.com/muratkeremozcan/pact-js-example-provider/pull/17)`openapi-types`[ vs zod to openapi](https://github.com/muratkeremozcan/pact-js-example-provider/pull/17)
-  - [optic at provider](https://github.com/muratkeremozcan/pact-js-example-provider/pull/18), [zod2Openapi part 2](https://github.com/muratkeremozcan/pact-js-example-provider/pull/19), [zor2Openapi part 3](https://github.com/muratkeremozcan/pact-js-example-provider/pull/21)
-  - [npm audit, renovate, badges](https://github.com/muratkeremozcan/pact-js-example-provider/pull/22)
-  - [pactv4 at provider](https://github.com/muratkeremozcan/pact-js-example-provider/pull/25) 
-  - [test hook improvements](https://github.com/muratkeremozcan/pact-js-example-provider/pull/28)
-  - [cypress schema validator](https://github.com/muratkeremozcan/pact-js-example-provider/pull/29)
-  - [selective testing step 1 - select by consumer](https://github.com/muratkeremozcan/pact-js-example-provider/pull/40)
-  - [ability to handle breaking changes](https://github.com/muratkeremozcan/pact-js-example-provider/pull/54)
-  - [buildVerifierOptions utility at the provider](https://github.com/muratkeremozcan/pact-js-example-provider/pull/57)
-  - [provider cors support](https://github.com/muratkeremozcan/pact-js-example-provider/pull/59)
-  - [Bi Directional Contract Testing setup at provider](https://github.com/muratkeremozcan/pact-js-example-provider/pull/60)
-- consumer
-  - [ts at consumer](https://github.com/muratkeremozcan/pact-js-example-consumer/pull/13)
-  - [cy & mockoon at consumer ](https://github.com/muratkeremozcan/pact-js-example-consumer/pull/16)
-  - [jest at consumer (nock)](https://github.com/muratkeremozcan/pact-js-example-consumer/pull/17)
-  - [npm audit, renovate, badges](https://github.com/muratkeremozcan/pact-js-example-consumer/pull/20)
-  - [update readme on both sides](https://github.com/muratkeremozcan/pact-js-example-provider/pull/23)
-  - [pact v4 consumer](https://github.com/muratkeremozcan/pact-js-example-consumer/pull/23)
-  - [setJsonBody test util on consumer](https://github.com/muratkeremozcan/pact-js-example-consumer/pull/24)
-- consumer-react
-  - [feat/ui-for-crud-movie](https://github.com/muratkeremozcan/pact-js-example-react-consumer/pull/4)
-  - [feat/react-query for react consumer](https://github.com/muratkeremozcan/pact-js-example-react-consumer/pull/5)
-  - [break down componets, cy e2e, cyct](https://github.com/muratkeremozcan/pact-js-example-react-consumer/pull/6)
-  - [zod at UI](https://github.com/muratkeremozcan/pact-js-example-react-consumer/pull/9)
-
-And here's the todo list
-
-* Bi-directional contract testing at consumer-react
-
-- changes
-  - change movie path to movies
-  - standerdized responses { status, data, message }
-  - make the data a lot more complex to exercise the matchers
-  - breaking change examples
 
 https://github.com/muratkeremozcan/pact-js-example-consumer
 
