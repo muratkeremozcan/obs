@@ -1,1 +1,0 @@
-- [get PR merged](https://github.com/helloextend/merchants-web-app/pull/84)
