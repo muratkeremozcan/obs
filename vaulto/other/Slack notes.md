@@ -682,3 +682,7 @@ docker volume rm events_kafka_data # or whatever
 
 # start docker containers
 ```
+
+
+## Tsconfig
+![[Pasted image 20241220094448.png]]
