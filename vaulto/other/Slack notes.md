@@ -686,3 +686,86 @@ docker volume rm events_kafka_data # or whatever
 
 ## Tsconfig
 ![[Pasted image 20241220094448.png]]
+
+## ssh work vs opensource
+
+git remote set-url origin git@github-work:muratozcan-seon/YourRepo.git
+git remote set-url origin git@github.com:muratkeremozcan/YourRepo.git
+
+
+## git alias settings
+`.gitconfig`
+```
+[alias]
+
+# Add all changes and commit with a message
+
+ac = "!f() { git add -A && git commit -m \"$1\"; }; f"
+
+# Display log with graph
+
+mylog = log --graph --oneline --decorate
+
+# Push current branch and set upstream
+
+pusho = "!git push -u origin \"$(git rev-parse --abbrev-ref HEAD)\""
+
+# Short status
+
+s = status
+
+# Checkout branch
+
+co = checkout
+
+# Create and switch to a new branch
+
+cob = switch -c
+
+# Pull changes
+
+p = pull
+
+# Prune deleted remote branches and remove local branches that are gone
+
+prune = "!git remote update --prune && git branch -vv | awk \"/: gone]/ {print \\$1}\" | xargs git branch -d"
+
+# Create an empty commit to re-run checks
+
+rerun = "!git commit --allow-empty -n -m \"re-run checks\" && git push"
+
+# Add all, commit, and push
+
+acp = "!f() { git ac \"$1\" && git pusho; }; f"
+
+  
+
+[user]
+
+name = muratozcan-seon
+
+email = murat.ozcan@seon.io
+
+  
+
+# For opensource directory and all its subdirectories
+
+# For any directory starting with examples- and all its subdirectories
+
+[includeIf "gitdir:/Users/murat.ozcan/opensource/"]
+
+path = ~/.gitconfig-os
+
+  
+
+[includeIf "gitdir:/Users/murat.ozcan/examples-/"]
+
+path = ~/.gitconfig-os
+```
+
+`.gitconfig-os0
+```
+[user]
+    name = muratkeremozcan
+    email = muratkerem@gmail.com
+```
