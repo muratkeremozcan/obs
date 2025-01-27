@@ -32,6 +32,7 @@ There aren't too many test frameworks that support that test strategy.. [Cypres
 
 * My golden rules in testing: - It’s always cost v confidence - cost = creation + execution + maintenance - What you can avoid testing is more important than what you are testing
 *   The debate on Page Object vs module pattern is really just Inheritance vs Composition.  Inheritance (PO) is great for describing what something is; the page has x, y, z on it.  Composition (module pattern) is great for describing what something does. Which one do you think best fits component based architecture, where components are the building blocks and get reused on pages? How about user flows?
+*  Components compose and if the pages which are built of components are abstracted with classes, there's over-abstraction and inevitable duplication
 *   Study for 1 hour every morning. Even in the most ideal job, you won't be learning more than 500 hours a year, because most of it is busy work and grind. If you invest an hour a day in gaining knowledge, in 5 years you will build 10 years worth of relative tech
 *   When you have purpose, you have work-life integration. Find your purpose, and never work a day in your life. Help others build their self-defined purpose, and you rarely have to people-manage.
 *   The ability to hold a holistic picture in mind and help other team members see it, collaboratively navigate towards it, changing direction as new ideas arise has been a hallmark of great engineers.
