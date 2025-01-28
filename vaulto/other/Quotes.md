@@ -58,6 +58,7 @@ There aren't too many test frameworks that support that test strategy.. [Cypres
 -   most notice a single grain of sand, others see the flow through the hourglass
 -   ...talk that dances around thorns 
 -   small men talk big 
+-   setbacks are setups for something greater
 -   if you're not upsetting anyone, you're not changing the status quo
 - -   one part of leadership is allowing others to do a worse job than you would
 -   leadership of creative people is mostly about enabling creative communication
