@@ -699,67 +699,49 @@ git remote set-url origin git@github.com:muratkeremozcan/YourRepo.git
 [alias]
 
 # Add all changes and commit with a message
-
 ac = "!f() { git add -A && git commit -m \"$1\"; }; f"
 
-# Display log with graph
-
+# Display log as a graph with one-line summaries
 mylog = log --graph --oneline --decorate
 
-# Push current branch and set upstream
-
+# Push the current branch and set the upstream
 pusho = "!git push -u origin \"$(git rev-parse --abbrev-ref HEAD)\""
 
-# Short status
-
+# Show short status
 s = status
 
-# Checkout branch
-
+# Switch to an existing branch
 co = checkout
 
 # Create and switch to a new branch
-
 cob = switch -c
 
-# Pull changes
-
+# Pull latest changes
 p = pull
 
-# Prune deleted remote branches and remove local branches that are gone
-
+# Remove local branches tracking deleted remote branches
 prune = "!git remote update --prune && git branch -vv | awk \"/: gone]/ {print \\$1}\" | xargs git branch -d"
 
-# Create an empty commit to re-run checks
-
+# Create an empty commit to trigger checks and push
 rerun = "!git commit --allow-empty -n -m \"re-run checks\" && git push"
 
-# Add all, commit, and push
-
+# Add all changes, commit with a message, and push
 acp = "!f() { git ac \"$1\" && git pusho; }; f"
 
-  
+# Stash changes with a message and keep staged/untracked files
+stashu = "!f() { git stash push -m \"${1:-package json changes}\" --keep-index -u; }; f"
 
 [user]
 
 name = muratozcan-seon
-
 email = murat.ozcan@seon.io
 
-  
-
-# For opensource directory and all its subdirectories
-
-# For any directory starting with examples- and all its subdirectories
-
+# For open-source directory and subdirectories
 [includeIf "gitdir:/Users/murat.ozcan/opensource/"]
-
 path = ~/.gitconfig-os
 
-  
-
+# For directories starting with examples- and subdirectories
 [includeIf "gitdir:/Users/murat.ozcan/examples-/"]
-
 path = ~/.gitconfig-os
 ```
 
