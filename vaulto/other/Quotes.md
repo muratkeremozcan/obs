@@ -66,3 +66,4 @@ There aren't too many test frameworks that support that test strategy.. [Cypres
 -   what's the point of it all if all you want is to be liked by everyone and avoid trouble. The only way I got any place was by breaking some of the rules.
 - More harm is caused in this world by stupidity and ignorance than outright evil. The incompetent and stupid are far more dangerous than those who are overtly evil, because we are never quite sure where they are leading us, until it is too late.
 -   Develop your sense of self worth from internal standards, and not incessant comparisons.
+- write-only code—hard to debug, annoying to read later.

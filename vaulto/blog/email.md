@@ -71,7 +71,7 @@ For the code snippets and working examples, we will be using [Cypress](https://w
 
 When using Cypress with Mailosaur, there are 3 test-development approaches:
 
-1. Implement [Mailosaur API](https://docs.mailosaur.com/reference) using Cypress API testing capabilities using [`cy.request()`](https://docs.cypress.io/api/commands/request.html#Syntax) or [`cy.api()`](https://github.com/bahmutov/cy-api). Utilize plugins and helper utilities to construct test suites. This was the original approach a long time ago. The test spec can be found [here](https://github.com/muratkeremozcan/cypressExamples/blob/master/cypress-mailosaur/cypress/integration/1.with-waituntil-cypress.spec.js).
+1. Implement [Mailosaur API]([https://mailosaur.com/docs/api](https://mailosaur.com/docs/api)) using Cypress API testing capabilities using [`cy.request()`](https://docs.cypress.io/api/commands/request.html#Syntax) or [`cy.api()`](https://github.com/bahmutov/cy-api). Utilize plugins and helper utilities to construct test suites. This was the original approach a long time ago. The test spec can be found [here](https://github.com/muratkeremozcan/cypressExamples/blob/master/cypress-mailosaur/cypress/integration/1.with-waituntil-cypress.spec.js).
 
 2. Utilize [Mailosaur's Node package](https://www.npmjs.com/package/mailosaur) and implement them using [`cy.task()`](https://docs.cypress.io/api/commands/task.html#Syntax) which allows running node within Cypress. This is a easier and cleaner approach than (1), and it became available as soon as the npm package was released. The test spec can be found [here](https://github.com/muratkeremozcan/cypressExamples/blob/master/cypress-mailosaur/cypress/integration/2.with-npm-package-and-cy-task.spec.js).
 
