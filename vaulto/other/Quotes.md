@@ -50,6 +50,8 @@ There aren't too many test frameworks that support that test strategy.. [Cypres
 *   The reasons why most people push back are cultural. They’re about familiarity and comfort. About not wanting to look or feel stupid in front of others.
 *   Most engineers find pw syntax simpler than cy because they do not get functional pipeline of commands, and have no idea how to debug or reason about it. Unless they are familiar with functional programming, the shift in mental modal is painful, hence the preference to pw.
 *   TypeScript saves you so much time by preventing many programming mistakes & runtime errors, leaving you more time to do other things such as deciphering & fixing insignificant TypeScript errors. (David Khorshid)
+*  I believe we should focus on building simple, solid, and future-proof solutions rather than over-engineered, temporary fixes. These quick fixes often cater to our current, imperfect state and will quickly become outdated as the project matures, leading to more rework and unnecessary busywork.
+- ...write-only code—hard to debug, annoying to read later.
 * `this` keyword in JavaScript will burn you one day. Then it will burn you again and again and again. If Dante Alighieri were alive today, he would put writing object-oriented JavaScript among one of the first levels of Hell for sure. ![[Pasted image 20220316143024.png]]
 
 
@@ -66,4 +68,5 @@ There aren't too many test frameworks that support that test strategy.. [Cypres
 -   what's the point of it all if all you want is to be liked by everyone and avoid trouble. The only way I got any place was by breaking some of the rules.
 - More harm is caused in this world by stupidity and ignorance than outright evil. The incompetent and stupid are far more dangerous than those who are overtly evil, because we are never quite sure where they are leading us, until it is too late.
 -   Develop your sense of self worth from internal standards, and not incessant comparisons.
-- write-only code—hard to debug, annoying to read later.
+
+
