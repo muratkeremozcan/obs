@@ -751,3 +751,42 @@ path = ~/.gitconfig-os
     name = muratkeremozcan
     email = muratkerem@gmail.com
 ```
+
+
+## switch vs map
+
+```ts
+const getConsoleMethodForLevel = (level: LogLevel): ((message: string) => void) => {
+
+	switch (level) {
+		case 'error':
+			return console.error	
+		case 'warning':
+			return console.warn
+		case 'info':
+			return console.info
+		case 'debug':
+			return console.debug
+		default:
+			// For 'step', 'success', and any others
+			return console.log
+	}
+
+}
+
+  
+
+const getConsoleMethodForLevel = (level: LogLevel): ((message: string) => void) => {
+
+	const methodMap: Record<LogLevel, (message: string) => void> = {
+		error: console.error,
+		warning: console.warn,
+		info: console.info,
+		debug: console.debug,
+		step: console.log,
+		success: console.log
+	}
+  
+	return methodMap[level]
+}
+```
