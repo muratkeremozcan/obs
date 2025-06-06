@@ -51,6 +51,17 @@ There aren't too many test frameworks that support that test strategy.. [Cypres
 *   Most engineers find pw syntax simpler than cy because they do not get functional pipeline of commands, and have no idea how to debug or reason about it. Unless they are familiar with functional programming, the shift in mental modal is painful, hence the preference to pw.
 *   TypeScript saves you so much time by preventing many programming mistakes & runtime errors, leaving you more time to do other things such as deciphering & fixing insignificant TypeScript errors. (David Khorshid)
 *  I believe we should focus on building simple, solid, and future-proof solutions rather than over-engineered, temporary fixes. These quick fixes often cater to our current, imperfect state and will quickly become outdated as the project matures, leading to more rework and unnecessary busywork.
+* In the world of AI-driven development, end-to-end tests reign supreme.  
+AI shines at generating unit and small-scope integration tests, where the context is limited and the variables are few. But as soon as the context expands—more services, more integrations, more edge cases—AI struggles to cover every scenario reliably.  
+  
+I’ve seen firsthand how complex AI-generated changes can be difficult to scrutinize. When that happens, a solid suite of E2E tests becomes the ultimate acceptance criteria. They tell you, definitively, whether a change behaves as expected in the real world.  
+  
+That’s why I believe TDD should become the default mindset when working with AI:  
+1. Write your acceptance criteria as tests first.  
+2. Let AI propose the implementation.  
+3. Run your E2E suite.  
+4. Refine / reject, and repeat
+   
 - ...write-only code—hard to debug, annoying to read later.
 * `this` keyword in JavaScript will burn you one day. Then it will burn you again and again and again. If Dante Alighieri were alive today, he would put writing object-oriented JavaScript among one of the first levels of Hell for sure. ![[Pasted image 20220316143024.png]]
 
