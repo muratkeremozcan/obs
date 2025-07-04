@@ -61,7 +61,15 @@ That’s why I believe TDD should become the default mindset when working with A
 2. Let AI propose the implementation.  
 3. Run your E2E suite.  
 4. Refine / reject, and repeat
-   
+
+* Pure coding is almost worthless now, but you still need enough fluency to guide and vet an AI helper. That makes these skills the real currency:
+   - **Figuring out what needs solving** and asking the right questions
+   - **Recognizing quality** and knowing when something’s “good enough”
+   - **Debugging & troubleshooting:** Pinpointing issues and fixing them efficiently
+   - **Persuasion & collaboration:** Explaining your ideas and rallying others 
+   - **Creative thinking:** Finding unconventional solutions when it matters  
+   - **System & architectural sense:** Understanding how components fit and scale
+
 - ...write-only code—hard to debug, annoying to read later.
 * `this` keyword in JavaScript will burn you one day. Then it will burn you again and again and again. If Dante Alighieri were alive today, he would put writing object-oriented JavaScript among one of the first levels of Hell for sure. ![[Pasted image 20220316143024.png]]
 
