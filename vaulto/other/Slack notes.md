@@ -790,3 +790,14 @@ const getConsoleMethodForLevel = (level: LogLevel): ((message: string) => void) 
 	return methodMap[level]
 }
 ```
+
+
+## BMAD method 
+
+Agentic planning: Analyst, PM, Architect agents help you produce real Product Requirement Docs and architecture docs—Not just prompts, actual specs you can ship.  
+
+Context-engineered development: A Scrum Master turns those specs into richly contextualized stories so the Dev agent stays on rails.  
+  
+TL;DR: It keeps the model laser-focused—does what you need, nothing more, nothing less; no room for misinterpretation.  
+  
+I recently contributed the QA/Test Architect agent, built into it years of encoded expertise. It feels like having a second me who remembers the whole knowledge set of a test architect, spots risks, and doesn’t miss edge cases. His name is Quinn, and he's been mind blowing.
